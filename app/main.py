@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy import select
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -91,3 +93,9 @@ API_PREFIX = "/api/v1"
 app.include_router(ingest.router, prefix=API_PREFIX)
 app.include_router(dashboard.router, prefix=API_PREFIX)
 app.include_router(admin.router, prefix=API_PREFIX)
+
+# Dashboard frontend (frontend/ — built from the Claude Design handoff).
+# Mounted last so /api/v1 and /docs keep precedence.
+_FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
+if _FRONTEND_DIR.is_dir():
+    app.mount("/", StaticFiles(directory=_FRONTEND_DIR, html=True), name="frontend")

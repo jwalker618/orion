@@ -1,0 +1,67 @@
+/* ============================================================================
+ * Generate — BASE LAYER
+ *
+ * Product-agnostic page defaults. Tokens must be imported before this file.
+ * ========================================================================= */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Tabular figures helper — analyst tables align their digits. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+ * Pane overlay — the GRAIN transition (→ navigate right).
+ * Increasing grain pushes a new full-height pane that slides in from the
+ * right edge OVER the coarser pane (which stays mounted beneath, dimmed) —
+ * a page-overlay, not an in-place nudge. Going back pops it off to the right.
+ * The PaneStack component owns this, transition-based, so the resting state is
+ * always the visible end-state (never stuck off-screen if motion doesn't run).
+ * ============================================================ */
+
+/* Hide scrollbar chrome while keeping scroll (dense list pages). */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Step-right pane transition (lens PaneStack): a new pane slides in from the
+ * right. Soft easing, no bounce — the platform's one signature motion. The
+ * resting state is fully visible; the entrance is an enhancement only, so
+ * print, PDF export, and reduced-motion show content immediately. */
+@keyframes pane-in {
+  from { opacity: 0; transform: translateX(42px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.pane-in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pane-in {
+    animation: pane-in var(--dur-pane) var(--ease-pane) both;
+  }
+}

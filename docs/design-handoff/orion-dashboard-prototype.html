@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/generate-design-system-de1f7a7b-aea6-421a-a498-48569880065c/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/generate-design-system-de1f7a7b-aea6-421a-a498-48569880065c/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/generate-design-system-de1f7a7b-aea6-421a-a498-48569880065c/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/generate-design-system-de1f7a7b-aea6-421a-a498-48569880065c/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/generate-design-system-de1f7a7b-aea6-421a-a498-48569880065c/tokens/theme-dark.css">
+  <link rel="stylesheet" href="_ds/generate-design-system-de1f7a7b-aea6-421a-a498-48569880065c/tokens/base.css">
+  <link rel="stylesheet" href="_ds/generate-design-system-de1f7a7b-aea6-421a-a498-48569880065c/styles.css">
+  <script src="_ds/generate-design-system-de1f7a7b-aea6-421a-a498-48569880065c/_ds_bundle.js"></script>
+  <script src="orion-icons.js"></script>
+  <style>
+    .orion-tab:hover { color: var(--color-ink) !important; }
+    .orion-ctrl:hover { background: var(--color-surface-sunken); }
+    .orion-row:hover { background: var(--color-surface-elev); }
+    ::selection { background: var(--color-info-soft); }
+    a { color: var(--color-info); }
+    a:hover { color: var(--color-info-deep); }
+  </style>
+</helmet>
+<div class="{{ rootClass }}" style="min-height:100vh;display:flex;flex-direction:column;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-sans)">
+
+  <!-- ============ MASTHEAD ============ -->
+  <header style="flex:none;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:var(--color-surface);border-bottom:1px solid var(--color-rule)">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="width:32px;height:32px;border-radius:9px;background:var(--color-chrome);display:flex;align-items:flex-end;justify-content:center;gap:2.5px;padding:8px 0">
+        <span style="width:3.5px;height:8px;background:var(--color-info);border-radius:2px"></span>
+        <span style="width:3.5px;height:13px;background:var(--color-info);border-radius:2px"></span>
+        <span style="width:3.5px;height:18px;background:var(--color-spot);border-radius:2px"></span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1px">
+        <div style="display:flex;align-items:baseline;gap:9px">
+          <span style="font-size:16px;font-weight:700;letter-spacing:.02em;color:var(--color-ink)">ORION</span>
+          <span style="font-size:11px;color:var(--color-ink-mute)">Broker Relations · Centre of Excellence</span>
+        </div>
+        <span style="font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--color-ink-mute)">Distribution intelligence</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="display:flex;align-items:center;gap:8px;height:34px;padding:0 12px;border-radius:10px;background:var(--color-surface-sunken);font-size:12.5px;color:var(--color-ink-soft)">
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--color-pos)"></span>
+        <span style="font-weight:600;color:var(--color-ink)">MS&amp;AD Group</span>
+        <span style="color:var(--color-ink-mute)">·</span>
+        <span>5 reporting entities</span>
+      </div>
+      <button class="orion-ctrl" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid var(--color-rule-strong);border-radius:10px;background:transparent;cursor:pointer;color:var(--color-ink-soft)">
+        <orion-icon name="Search" size="17"></orion-icon>
+      </button>
+      <button class="orion-ctrl" onClick="{{ toggleTheme }}" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid var(--color-rule-strong);border-radius:10px;background:transparent;cursor:pointer;color:var(--color-ink-soft)">
+        <orion-icon name="{{ themeIcon }}" size="17"></orion-icon>
+      </button>
+      <div style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:var(--color-chrome);color:var(--color-canvas);font-size:12px;font-weight:700">KI</div>
+    </div>
+  </header>
+
+  <!-- ============ TAB BAR ============ -->
+  <nav style="flex:none;height:50px;display:flex;align-items:stretch;gap:28px;padding:0 28px;background:var(--color-surface);border-bottom:1px solid var(--color-rule)">
+    <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="6">
+      <div class="orion-tab" onClick="{{ tab.onSelect }}" style="{{ tab.style }}">
+        <orion-icon name="{{ tab.icon }}" size="16"></orion-icon>
+        <span>{{ tab.label }}</span>
+      </div>
+    </sc-for>
+  </nav>
+
+  <!-- ============ FILTER BAR ============ -->
+  <div style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 28px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+        <div class="orion-ctrl" style="display:flex;align-items:center;gap:10px;height:36px;padding:0 12px;border:1px solid var(--color-rule-strong);border-radius:10px;background:var(--color-surface);cursor:pointer">
+          <span style="font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-ink-mute)">{{ f.label }}</span>
+          <span style="font-size:12.5px;font-weight:600;color:var(--color-ink)">{{ f.value }}</span>
+          <orion-icon name="ChevronDown" size="14"></orion-icon>
+        </div>
+      </sc-for>
+      <button style="display:flex;align-items:center;gap:6px;height:36px;padding:0 12px;border:none;border-radius:10px;background:transparent;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--color-ink-soft);font-family:var(--font-sans)">
+        <orion-icon name="RotateCcw" size="14"></orion-icon>
+        Reset
+      </button>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="display:flex;align-items:center;gap:7px;height:30px;padding:0 4px 0 11px;border-radius:999px;background:var(--color-info-soft);color:var(--color-info-deep);font-size:12px;font-weight:600">
+        MSRE · Global
+        <span style="width:19px;height:19px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(0,0,0,.06);cursor:pointer">
+          <orion-icon name="X" size="12"></orion-icon>
+        </span>
+      </div>
+      <span style="font-size:11px;color:var(--color-ink-mute);font-variant-numeric:tabular-nums">as of 9 Jul 2026 · 03:33 UTC</span>
+    </div>
+  </div>
+
+  <!-- ============ CONTENT ============ -->
+  <main style="flex:1;padding:26px 28px 40px;overflow:auto">
+
+    <!-- ===== EXECUTIVE ===== -->
+    <sc-if value="{{ isExec }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:18px;max-width:1360px;margin:0 auto">
+
+        <!-- KPI ROW -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+            <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;padding:18px 20px">
+              <div style="display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">
+                <orion-icon name="{{ k.icon }}" size="13"></orion-icon>
+                {{ k.eyebrow }}
+              </div>
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:12px">
+                <span style="font-size:34px;font-weight:600;letter-spacing:-.01em;line-height:1;font-variant-numeric:tabular-nums;color:var(--color-ink)">{{ k.value }}</span>
+                <span style="display:inline-flex;align-items:center;gap:2px;padding:3px 8px 3px 5px;border-radius:999px;font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums;background:{{ k.trendBg }};color:{{ k.trendFg }}">
+                  <orion-icon name="{{ k.trendIcon }}" size="13"></orion-icon>
+                  {{ k.trendLabel }}
+                </span>
+              </div>
+              <div style="margin-top:8px;font-size:11.5px;color:var(--color-ink-mute)">{{ k.sub }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- SERIES CHART -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Gross written premium vs plan</span>
+              <span style="font-size:14px;font-weight:600;color:var(--color-ink)">12-month heartbeat · hit ratio overlaid</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;font-size:11.5px;color:var(--color-ink-soft)">
+              <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:11px;height:11px;border-radius:3px;background:var(--color-info)"></span>Actual GWP</span>
+              <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:11px;height:11px;border-radius:3px;background:var(--color-info-soft);border:1px solid var(--color-info)"></span>Plan GWP</span>
+              <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:3px;border-radius:2px;background:var(--color-spot)"></span>Hit ratio</span>
+            </div>
+          </div>
+          <div style="padding:16px 20px 6px">
+            <svg viewBox="0 0 1000 344" width="100%" style="display:block;font-family:var(--font-mono)">
+              <sc-for list="{{ chart.grid }}" as="g" hint-placeholder-count="5">
+                <line x1="{{ chart.plotL }}" x2="{{ chart.plotR }}" y1="{{ g.y }}" y2="{{ g.y }}" style="stroke:var(--color-rule);stroke-width:1"></line>
+              </sc-for>
+              <sc-for list="{{ chart.grid }}" as="g" hint-placeholder-count="5">
+                <text x="{{ chart.moneyLabelX }}" y="{{ g.ty }}" text-anchor="end" font-size="10.5" style="fill:var(--color-ink-mute)">{{ g.label }}</text>
+              </sc-for>
+              <sc-for list="{{ chart.rTicks }}" as="r" hint-placeholder-count="3">
+                <text x="{{ chart.ratioLabelX }}" y="{{ r.ty }}" text-anchor="start" font-size="10.5" style="fill:var(--color-spot)">{{ r.label }}</text>
+              </sc-for>
+              <sc-for list="{{ chart.bars }}" as="b" hint-placeholder-count="24">
+                <rect x="{{ b.x }}" y="{{ b.y }}" width="{{ b.w }}" height="{{ b.h }}" rx="2" style="fill:{{ b.fill }};stroke:{{ b.stroke }};stroke-width:{{ b.sw }}"></rect>
+              </sc-for>
+              <path d="{{ chart.linePath }}" style="fill:none;stroke:var(--color-spot);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round"></path>
+              <sc-for list="{{ chart.dots }}" as="d" hint-placeholder-count="12">
+                <circle cx="{{ d.cx }}" cy="{{ d.cy }}" r="3" style="fill:var(--color-surface);stroke:var(--color-spot);stroke-width:2"></circle>
+              </sc-for>
+              <sc-for list="{{ chart.xLabels }}" as="x" hint-placeholder-count="12">
+                <text x="{{ x.x }}" y="{{ chart.bottomY }}" text-anchor="middle" font-size="11" style="fill:var(--color-ink-mute)">{{ x.label }}</text>
+              </sc-for>
+            </svg>
+          </div>
+          <div style="border-top:1px solid var(--color-rule);overflow-x:auto">
+            <div style="min-width:760px;padding:6px 20px 14px">
+              <div style="display:grid;grid-template-columns:118px repeat(12,1fr);gap:2px;align-items:center;padding:7px 0;border-bottom:1px solid var(--color-rule)">
+                <span style="font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute)">Month</span>
+                <sc-for list="{{ chart.table }}" as="t" hint-placeholder-count="12"><span style="font-size:10.5px;font-weight:600;color:var(--color-ink-soft);text-align:center">{{ t.m }}</span></sc-for>
+              </div>
+              <div style="display:grid;grid-template-columns:118px repeat(12,1fr);gap:2px;align-items:center;padding:8px 0;border-bottom:1px solid var(--color-rule)">
+                <span style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--color-ink)"><span style="width:10px;height:10px;border-radius:3px;background:var(--color-info)"></span>Actual GWP <span style="color:var(--color-ink-mute);font-weight:500">$M</span></span>
+                <sc-for list="{{ chart.table }}" as="t" hint-placeholder-count="12"><span style="font-size:11.5px;font-weight:600;color:var(--color-ink);text-align:center;font-variant-numeric:tabular-nums">{{ t.actual }}</span></sc-for>
+              </div>
+              <div style="display:grid;grid-template-columns:118px repeat(12,1fr);gap:2px;align-items:center;padding:8px 0;border-bottom:1px solid var(--color-rule)">
+                <span style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--color-ink-soft)"><span style="width:10px;height:10px;border-radius:3px;background:var(--color-info-soft);border:1px solid var(--color-info)"></span>Plan GWP <span style="color:var(--color-ink-mute);font-weight:500">$M</span></span>
+                <sc-for list="{{ chart.table }}" as="t" hint-placeholder-count="12"><span style="font-size:11.5px;color:var(--color-ink-soft);text-align:center;font-variant-numeric:tabular-nums">{{ t.plan }}</span></sc-for>
+              </div>
+              <div style="display:grid;grid-template-columns:118px repeat(12,1fr);gap:2px;align-items:center;padding:8px 0">
+                <span style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--color-spot-deep)"><span style="width:14px;height:3px;border-radius:2px;background:var(--color-spot)"></span>Hit ratio</span>
+                <sc-for list="{{ chart.table }}" as="t" hint-placeholder-count="12"><span style="font-size:11.5px;font-weight:600;color:var(--color-spot-deep);text-align:center;font-variant-numeric:tabular-nums">{{ t.hit }}</span></sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PLAN VS ACTUAL -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Plan vs actual</span>
+              <span style="font-size:14px;font-weight:600;color:var(--color-ink)">Entity × coverage · attainment &amp; variance</span>
+            </div>
+            <span style="font-size:11px;color:var(--color-ink-mute)">no flags = on plan · 8 of 40 cells</span>
+          </div>
+          <div style="padding:6px 20px 14px">
+            <div style="display:grid;grid-template-columns:172px 1.5fr 1fr 1fr 1.4fr;gap:14px;padding:12px 8px 10px;border-bottom:1px solid var(--color-rule)">
+              <span style="font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--color-ink-mute)">Entity · Coverage</span>
+              <span style="font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--color-ink-mute)">GWP · plan attainment</span>
+              <span style="font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--color-ink-mute)">Hit ratio Δ</span>
+              <span style="font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--color-ink-mute)">Loss ratio Δ</span>
+              <span style="font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--color-ink-mute)">Flags</span>
+            </div>
+            <sc-for list="{{ planRows }}" as="r" hint-placeholder-count="8">
+              <div class="orion-row" style="display:grid;grid-template-columns:172px 1.5fr 1fr 1fr 1.4fr;gap:14px;align-items:center;padding:12px 8px;border-bottom:1px solid var(--color-rule)">
+                <div style="display:flex;flex-direction:column;gap:2px">
+                  <span style="font-size:13px;font-weight:600;color:var(--color-ink)">{{ r.entity }}</span>
+                  <span style="font-size:11px;color:var(--color-ink-mute)">{{ r.coverage }}</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <div style="display:flex;align-items:baseline;justify-content:space-between;font-variant-numeric:tabular-nums">
+                    <span style="font-size:13px;font-weight:600;color:var(--color-ink)">{{ r.actGwp }}</span>
+                    <span style="font-size:11px;color:var(--color-ink-mute)">plan {{ r.planGwp }}</span>
+                  </div>
+                  <div style="position:relative;height:6px;border-radius:999px;background:var(--color-surface-sunken);overflow:hidden">
+                    <div style="position:absolute;left:0;top:0;bottom:0;width:{{ r.attW }};background:{{ r.attColor }};border-radius:999px"></div>
+                  </div>
+                  <span style="font-size:10.5px;font-weight:600;color:{{ r.attColor }};font-variant-numeric:tabular-nums">{{ r.att }} attainment</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums">
+                  <span style="font-size:13px;font-weight:600;color:var(--color-ink)">{{ r.hr }}</span>
+                  <span style="display:inline-flex;padding:2px 7px;border-radius:999px;font-size:11px;font-weight:600;background:{{ r.hrVarBg }};color:{{ r.hrVarFg }}">{{ r.hrVar }}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums">
+                  <span style="font-size:13px;font-weight:600;color:var(--color-ink)">{{ r.lr }}</span>
+                  <span style="display:inline-flex;padding:2px 7px;border-radius:999px;font-size:11px;font-weight:600;background:{{ r.lrVarBg }};color:{{ r.lrVarFg }}">{{ r.lrVar }}</span>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:5px">
+                  <sc-for list="{{ r.flags }}" as="fl" hint-placeholder-count="1">
+                    <span style="display:inline-flex;padding:2px 8px;border-radius:999px;font-size:10.5px;font-weight:600;background:var(--color-neg-soft);color:var(--color-neg)">{{ fl }}</span>
+                  </sc-for>
+                  <sc-if value="{{ r.onPlan }}">
+                    <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--color-pos)">
+                      <orion-icon name="Check" size="13"></orion-icon>on plan
+                    </span>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- TOP BROKERS + ALERTS -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Top brokers by GWP</span>
+              <span style="font-size:11px;color:var(--color-info-deep);font-weight:600;cursor:pointer">View all 80 →</span>
+            </div>
+            <div style="padding:6px 8px 8px">
+              <sc-for list="{{ topBrokers }}" as="b" hint-placeholder-count="5">
+                <div class="orion-row" style="display:grid;grid-template-columns:22px 1fr auto auto;gap:12px;align-items:center;padding:11px 12px;border-radius:9px;cursor:pointer">
+                  <span style="font-size:12px;font-weight:600;color:var(--color-ink-mute);font-variant-numeric:tabular-nums">{{ b.rank }}</span>
+                  <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+                    <span style="font-size:13px;font-weight:600;color:var(--color-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ b.name }}</span>
+                    <span style="display:inline-flex;align-items:center;gap:6px">
+                      <span style="padding:1px 7px;border-radius:999px;font-size:9.5px;font-weight:700;letter-spacing:.04em;background:{{ b.tierBg }};color:{{ b.tierFg }}">{{ b.tier }}</span>
+                      <span style="font-size:11px;color:var(--color-ink-mute)">{{ b.region }}</span>
+                    </span>
+                  </div>
+                  <div style="text-align:right">
+                    <div style="font-size:13px;font-weight:600;color:var(--color-ink);font-variant-numeric:tabular-nums">{{ b.gwp }}</div>
+                    <div style="font-size:10.5px;color:var(--color-ink-mute)">GWP</div>
+                  </div>
+                  <div style="text-align:right;min-width:54px">
+                    <div style="font-size:13px;font-weight:600;color:var(--color-info-deep);font-variant-numeric:tabular-nums">{{ b.hr }}</div>
+                    <div style="font-size:10.5px;color:var(--color-ink-mute)">hit</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Alerts</span>
+              <span style="font-size:11px;color:var(--color-ink-mute)">showing most recent · capped at 50</span>
+            </div>
+            <div style="padding:4px 8px 8px;max-height:340px;overflow:auto">
+              <sc-for list="{{ alerts }}" as="a" hint-placeholder-count="6">
+                <div class="orion-row" style="display:flex;gap:11px;padding:11px 12px;border-radius:9px;cursor:pointer">
+                  <span style="flex:none;width:9px;height:9px;margin-top:4px;border-radius:50%;background:{{ a.dot }}"></span>
+                  <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                    <span style="font-size:12.5px;line-height:1.45;color:var(--color-ink)">{{ a.message }}</span>
+                    <div style="display:flex;flex-wrap:wrap;gap:5px">
+                      <span style="padding:1px 7px;border-radius:999px;font-size:10px;font-weight:600;background:var(--color-surface-sunken);color:var(--color-ink-soft)">{{ a.entity }}</span>
+                      <span style="padding:1px 7px;border-radius:999px;font-size:10px;font-weight:600;background:var(--color-surface-sunken);color:var(--color-ink-soft)">{{ a.coverage }}</span>
+                      <span style="padding:1px 7px;border-radius:999px;font-size:10px;font-weight:600;background:var(--color-surface-sunken);color:var(--color-ink-mute)">{{ a.period }}</span>
+                      <span style="padding:1px 7px;border-radius:999px;font-size:10px;font-weight:600;background:{{ a.typeBg }};color:{{ a.typeFg }}">{{ a.typeLabel }}</span>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </sc-if>
+
+    <!-- ===== BROKER PERFORMANCE ===== -->
+    <sc-if value="{{ isBrokers }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:18px;max-width:1360px;margin:0 auto">
+        <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Broker leaderboard</span>
+              <span style="font-size:14px;font-weight:600;color:var(--color-ink)">Ranked by gross written premium · click a row for the profile</span>
+            </div>
+            <span style="font-size:11px;color:var(--color-ink-mute)">80 brokers · showing 1–12</span>
+          </div>
+          <div style="overflow-x:auto">
+            <div style="min-width:1040px">
+              <div style="display:grid;grid-template-columns:34px minmax(180px,1.5fr) 96px 116px 66px 92px 92px 84px 62px 124px;gap:12px;align-items:center;padding:11px 20px;border-bottom:1px solid var(--color-rule)">
+                <span style="font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute);text-align:right">#</span>
+                <span style="font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute)">Broker</span>
+                <span style="font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute)">Tier</span>
+                <span style="font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute)">Home region</span>
+                <span style="font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute);text-align:right">Hit</span>
+                <span style="font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute);text-align:right">GWP</span>
+                <span style="font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute);text-align:right">Brokerage</span>
+                <span style="font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute);text-align:center">Pricing</span>
+                <span style="font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute);text-align:right">Loss</span>
+                <span style="font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute);text-align:center">12-mo GWP</span>
+              </div>
+              <sc-for list="{{ brokers }}" as="b" hint-placeholder-count="12">
+                <div class="orion-row" onClick="{{ b.onOpen }}" style="display:grid;grid-template-columns:34px minmax(180px,1.5fr) 96px 116px 66px 92px 92px 84px 62px 124px;gap:12px;align-items:center;padding:11px 20px;border-bottom:1px solid var(--color-rule);cursor:pointer">
+                  <span style="font-size:12px;font-weight:600;color:var(--color-ink-mute);font-variant-numeric:tabular-nums;text-align:right">{{ b.rank }}</span>
+                  <div style="display:flex;flex-direction:column;gap:1px;min-width:0">
+                    <span style="font-size:13px;font-weight:600;color:var(--color-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ b.name }}</span>
+                    <span style="font-size:10.5px;color:var(--color-ink-mute)">{{ b.group }}</span>
+                  </div>
+                  <span style="justify-self:start;padding:2px 8px;border-radius:999px;font-size:9.5px;font-weight:700;letter-spacing:.04em;background:{{ b.tierBg }};color:{{ b.tierFg }}">{{ b.tier }}</span>
+                  <span style="font-size:12px;color:var(--color-ink-soft)">{{ b.region }}</span>
+                  <span style="font-size:12.5px;font-weight:600;color:var(--color-info-deep);font-variant-numeric:tabular-nums;text-align:right">{{ b.hr }}</span>
+                  <span style="font-size:12.5px;font-weight:600;color:var(--color-ink);font-variant-numeric:tabular-nums;text-align:right">{{ b.gwp }}</span>
+                  <span style="font-size:12.5px;color:var(--color-ink-soft);font-variant-numeric:tabular-nums;text-align:right">{{ b.brokerage }}</span>
+                  <span style="justify-self:center;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;font-variant-numeric:tabular-nums;background:{{ b.devBg }};color:{{ b.devFg }}">{{ b.dev }}</span>
+                  <span style="font-size:12.5px;font-variant-numeric:tabular-nums;text-align:right;color:{{ b.lrColor }}">{{ b.lr }}</span>
+                  <span style="justify-self:center">
+                    <svg viewBox="0 0 104 30" width="104" height="30" style="display:block">
+                      <path d="{{ b.sparkArea }}" style="fill:var(--color-info-soft);stroke:none"></path>
+                      <path d="{{ b.sparkLine }}" style="fill:none;stroke:var(--color-info);stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round"></path>
+                    </svg>
+                  </span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:var(--color-surface-elev);border-top:1px solid var(--color-rule)">
+            <span style="font-size:11.5px;color:var(--color-ink-mute)">Showing 1–12 of 80 brokers</span>
+            <div style="display:flex;gap:8px">
+              <button style="display:flex;align-items:center;gap:5px;height:32px;padding:0 11px;border:1px solid var(--color-rule-strong);border-radius:9px;background:transparent;color:var(--color-ink-mute);font-size:12px;font-weight:600;font-family:var(--font-sans);cursor:not-allowed"><orion-icon name="ArrowLeft" size="14"></orion-icon>Prev</button>
+              <button class="orion-ctrl" style="display:flex;align-items:center;gap:5px;height:32px;padding:0 11px;border:1px solid var(--color-rule-strong);border-radius:9px;background:var(--color-surface);color:var(--color-ink);font-size:12px;font-weight:600;font-family:var(--font-sans);cursor:pointer">Next<orion-icon name="ArrowRight" size="14"></orion-icon></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE MODAL -->
+      <sc-if value="{{ profile }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ profile.close }}" style="position:fixed;inset:0;z-index:60;background:rgba(11,34,55,.42);display:flex;align-items:center;justify-content:center;padding:32px">
+          <div onClick="{{ stop }}" style="width:760px;max-width:100%;max-height:88vh;overflow:auto;background:var(--color-surface);border:1px solid var(--color-rule);border-radius:16px;box-shadow:0 12px 32px rgba(11,34,55,.18)">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 22px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                  <span style="font-size:18px;font-weight:700;color:var(--color-ink)">{{ profile.name }}</span>
+                  <span style="padding:2px 9px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.04em;background:{{ profile.tierBg }};color:{{ profile.tierFg }}">{{ profile.tier }}</span>
+                  <sc-if value="{{ profile.isNew }}"><span style="padding:2px 9px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.04em;background:var(--color-spot-soft);color:var(--color-spot-deep)">NEW</span></sc-if>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--color-ink-soft)">
+                  <span style="font-variant-numeric:tabular-nums">{{ profile.id }}</span>
+                  <sc-if value="{{ profile.hasGroup }}"><span style="color:var(--color-ink-mute)">·</span><span>Group: {{ profile.group }}</span></sc-if>
+                  <span style="color:var(--color-ink-mute)">·</span><span>{{ profile.region }}</span>
+                </div>
+              </div>
+              <button onClick="{{ profile.close }}" class="orion-ctrl" style="width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;border:1px solid var(--color-rule-strong);border-radius:10px;background:transparent;color:var(--color-ink-soft);cursor:pointer"><orion-icon name="X" size="17"></orion-icon></button>
+            </div>
+            <div style="padding:20px 22px;display:flex;flex-direction:column;gap:18px">
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+                <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-ink-mute)">GWP</span><span style="font-size:19px;font-weight:600;color:var(--color-ink);font-variant-numeric:tabular-nums">{{ profile.gwp }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-ink-mute)">Hit ratio</span><span style="font-size:19px;font-weight:600;color:var(--color-info-deep);font-variant-numeric:tabular-nums">{{ profile.hr }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-ink-mute)">Pricing dev.</span><span style="font-size:19px;font-weight:600;color:var(--color-ink);font-variant-numeric:tabular-nums">{{ profile.dev }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-ink-mute)">Loss ratio</span><span style="font-size:19px;font-weight:600;color:var(--color-ink);font-variant-numeric:tabular-nums">{{ profile.lr }}</span></div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 210px;gap:18px;align-items:stretch">
+                <div style="border:1px solid var(--color-rule);border-radius:12px;padding:14px 16px">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                    <span style="font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-ink-mute)">Quotes vs binds · 12 mo</span>
+                    <div style="display:flex;gap:12px;font-size:10.5px;color:var(--color-ink-soft)">
+                      <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2px;background:var(--color-surface-sunken);border:1px solid var(--color-rule-strong)"></span>Quotes</span>
+                      <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2px;background:var(--color-info)"></span>Binds</span>
+                      <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;height:2.5px;border-radius:2px;background:var(--color-spot)"></span>Hit</span>
+                    </div>
+                  </div>
+                  <svg viewBox="0 0 520 150" width="100%" style="display:block;font-family:var(--font-mono)">
+                    <sc-for list="{{ profile.mBars }}" as="mb" hint-placeholder-count="24">
+                      <rect x="{{ mb.x }}" y="{{ mb.y }}" width="{{ mb.w }}" height="{{ mb.h }}" rx="1.5" style="fill:{{ mb.fill }};stroke:{{ mb.stroke }};stroke-width:{{ mb.sw }}"></rect>
+                    </sc-for>
+                    <path d="{{ profile.mLine }}" style="fill:none;stroke:var(--color-spot);stroke-width:2;stroke-linejoin:round;stroke-linecap:round"></path>
+                    <sc-for list="{{ profile.mDots }}" as="md" hint-placeholder-count="12">
+                      <circle cx="{{ md.cx }}" cy="{{ md.cy }}" r="2.4" style="fill:var(--color-surface);stroke:var(--color-spot);stroke-width:1.8"></circle>
+                    </sc-for>
+                    <sc-for list="{{ profile.mLabels }}" as="ml" hint-placeholder-count="12">
+                      <text x="{{ ml.x }}" y="145" text-anchor="middle" font-size="9" style="fill:var(--color-ink-mute)">{{ ml.label }}</text>
+                    </sc-for>
+                  </svg>
+                </div>
+                <div style="border:1px solid var(--color-rule);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+                  <span style="font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-ink-mute);align-self:flex-start">Share of wallet</span>
+                  <sc-if value="{{ profile.hasGroup }}" hint-placeholder-val="{{ true }}">
+                    <div style="position:relative;width:132px;height:132px">
+                      <svg viewBox="0 0 36 36" width="132" height="132" style="transform:rotate(-90deg)">
+                        <circle cx="18" cy="18" r="15.915" style="fill:none;stroke:var(--color-surface-sunken);stroke-width:3.6"></circle>
+                        <circle cx="18" cy="18" r="15.915" pathLength="100" stroke-dasharray="{{ profile.sowDash }}" style="fill:none;stroke:var(--color-info);stroke-width:3.6;stroke-linecap:round"></circle>
+                      </svg>
+                      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                        <span style="font-size:22px;font-weight:600;color:var(--color-ink);font-variant-numeric:tabular-nums">{{ profile.sow }}</span>
+                        <span style="font-size:9.5px;color:var(--color-ink-mute)">of group GWP</span>
+                      </div>
+                    </div>
+                    <span style="font-size:10.5px;color:var(--color-ink-mute);text-align:center">within {{ profile.group }}</span>
+                  </sc-if>
+                  <sc-if value="{{ profile.noGroup }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 0;color:var(--color-ink-mute);text-align:center">
+                      <orion-icon name="Info" size="20"></orion-icon>
+                      <span style="font-size:11.5px">No parent group — share of wallet not applicable.</span>
+                    </div>
+                  </sc-if>
+                </div>
+              </div>
+
+              <div style="border:1px solid var(--color-rule);border-radius:12px;padding:14px 16px">
+                <span style="font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-ink-mute)">Coverage split · GWP</span>
+                <div style="display:flex;flex-direction:column;gap:11px;margin-top:12px">
+                  <sc-for list="{{ profile.coverages }}" as="c" hint-placeholder-count="5">
+                    <div style="display:grid;grid-template-columns:96px 1fr 78px 54px;gap:12px;align-items:center">
+                      <span style="font-size:12px;font-weight:500;color:var(--color-ink)">{{ c.name }}</span>
+                      <div style="height:8px;border-radius:999px;background:var(--color-surface-sunken);overflow:hidden"><div style="height:100%;width:{{ c.w }};background:var(--color-info);border-radius:999px"></div></div>
+                      <span style="font-size:12px;font-weight:600;color:var(--color-ink);font-variant-numeric:tabular-nums;text-align:right">{{ c.gwp }}</span>
+                      <span style="font-size:11px;color:var(--color-ink-mute);font-variant-numeric:tabular-nums;text-align:right">{{ c.hr }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </sc-if>
+
+    <!-- ===== EXPOSURE & CONCENTRATION ===== -->
+    <sc-if value="{{ isExposure }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:18px;max-width:1360px;margin:0 auto">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Aggregate limit by region</span>
+              <span style="font-size:10.5px;color:var(--color-ink-mute)">bar = limit · value = GWP</span>
+            </div>
+            <div style="padding:16px 20px;display:flex;flex-direction:column;gap:13px">
+              <sc-for list="{{ expRegion }}" as="r" hint-placeholder-count="7">
+                <div style="display:grid;grid-template-columns:96px 1fr 132px;gap:12px;align-items:center">
+                  <span style="font-size:12px;font-weight:500;color:var(--color-ink)">{{ r.name }}</span>
+                  <div style="height:10px;border-radius:999px;background:var(--color-surface-sunken);overflow:hidden"><div style="height:100%;width:{{ r.w }};background:var(--color-info);border-radius:999px"></div></div>
+                  <div style="text-align:right;font-variant-numeric:tabular-nums"><span style="font-size:12.5px;font-weight:600;color:var(--color-ink)">{{ r.limit }}</span><span style="font-size:11px;color:var(--color-ink-mute)"> · {{ r.gwp }}</span></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Aggregate limit by coverage</span>
+              <span style="font-size:10.5px;color:var(--color-ink-mute)">bar = limit · value = GWP</span>
+            </div>
+            <div style="padding:16px 20px;display:flex;flex-direction:column;gap:13px">
+              <sc-for list="{{ expCoverage }}" as="r" hint-placeholder-count="8">
+                <div style="display:grid;grid-template-columns:96px 1fr 132px;gap:12px;align-items:center">
+                  <span style="font-size:12px;font-weight:500;color:var(--color-ink)">{{ r.name }}</span>
+                  <div style="height:10px;border-radius:999px;background:var(--color-surface-sunken);overflow:hidden"><div style="height:100%;width:{{ r.w }};background:var(--color-aux);border-radius:999px"></div></div>
+                  <div style="text-align:right;font-variant-numeric:tabular-nums"><span style="font-size:12.5px;font-weight:600;color:var(--color-ink)">{{ r.limit }}</span><span style="font-size:11px;color:var(--color-ink-mute)"> · {{ r.gwp }}</span></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px;align-items:start">
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Top exposed clients</span>
+                <span style="font-size:12px;color:var(--color-ink-soft)">Anonymised · top-client-per-submission granularity</span>
+              </div>
+              <span style="font-size:11px;color:var(--color-ink-mute)">top 10</span>
+            </div>
+            <div style="padding:4px 12px 10px">
+              <sc-for list="{{ topClients }}" as="c" hint-placeholder-count="10">
+                <div class="orion-row" style="display:grid;grid-template-columns:26px 88px 1fr 108px 84px;gap:12px;align-items:center;padding:10px 8px;border-radius:8px">
+                  <span style="font-size:11.5px;color:var(--color-ink-mute);font-variant-numeric:tabular-nums;text-align:right">{{ c.rank }}</span>
+                  <span style="font-size:12.5px;font-weight:600;color:var(--color-ink);font-family:var(--font-mono)">{{ c.ref }}</span>
+                  <span style="font-size:11px;color:var(--color-ink-soft);letter-spacing:.02em">{{ c.industry }}</span>
+                  <span style="font-size:12.5px;font-weight:600;color:var(--color-ink);font-variant-numeric:tabular-nums;text-align:right">{{ c.limit }}</span>
+                  <span style="justify-self:end;padding:2px 9px;border-radius:999px;font-size:10.5px;font-weight:600;background:{{ c.entBg }};color:{{ c.entFg }}">{{ c.entity }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Concentration · Lorenz curve</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:600;background:var(--color-warn-soft);color:var(--color-warn)">Gini {{ lorenz.gini }}</span>
+            </div>
+            <div style="padding:16px 20px 10px">
+              <svg viewBox="0 0 260 232" width="100%" style="display:block;font-family:var(--font-mono)">
+                <line x1="{{ lorenz.ox }}" y1="{{ lorenz.oy }}" x2="{{ lorenz.ex }}" y2="{{ lorenz.oy }}" style="stroke:var(--color-rule-strong);stroke-width:1"></line>
+                <line x1="{{ lorenz.ox }}" y1="{{ lorenz.oy }}" x2="{{ lorenz.ox }}" y2="{{ lorenz.ty }}" style="stroke:var(--color-rule-strong);stroke-width:1"></line>
+                <line x1="{{ lorenz.diag.x1 }}" y1="{{ lorenz.diag.y1 }}" x2="{{ lorenz.diag.x2 }}" y2="{{ lorenz.diag.y2 }}" style="stroke:var(--color-ink-mute);stroke-width:1;stroke-dasharray:4 4"></line>
+                <path d="{{ lorenz.area }}" style="fill:var(--color-info-soft);stroke:none;opacity:.7"></path>
+                <path d="{{ lorenz.curve }}" style="fill:none;stroke:var(--color-info);stroke-width:2.2;stroke-linejoin:round"></path>
+                <text x="42" y="224" font-size="8.5" style="fill:var(--color-ink-mute)">0%</text>
+                <text x="228" y="224" font-size="8.5" style="fill:var(--color-ink-mute)">clients 100%</text>
+              </svg>
+              <p style="margin:6px 2px 0;font-size:11px;line-height:1.5;color:var(--color-ink-mute)">The curve bows below the equality diagonal — a Gini of {{ lorenz.gini }} signals meaningful exposure concentration in a small set of clients.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+            <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Aggregate limit breaches</span>
+            <span style="font-size:11px;color:var(--color-ink-mute)">{{ expAlerts.length }} active</span>
+          </div>
+          <div style="padding:4px 8px 8px">
+            <sc-for list="{{ expAlerts }}" as="a" hint-placeholder-count="3">
+              <div class="orion-row" style="display:flex;gap:11px;padding:11px 12px;border-radius:9px">
+                <span style="flex:none;width:9px;height:9px;margin-top:4px;border-radius:50%;background:{{ a.dot }}"></span>
+                <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                  <span style="font-size:12.5px;line-height:1.45;color:var(--color-ink)">{{ a.message }}</span>
+                  <div style="display:flex;flex-wrap:wrap;gap:5px">
+                    <span style="padding:1px 7px;border-radius:999px;font-size:10px;font-weight:600;background:var(--color-surface-sunken);color:var(--color-ink-soft)">{{ a.entity }}</span>
+                    <span style="padding:1px 7px;border-radius:999px;font-size:10px;font-weight:600;background:var(--color-surface-sunken);color:var(--color-ink-soft)">{{ a.coverage }}</span>
+                    <span style="padding:1px 7px;border-radius:999px;font-size:10px;font-weight:600;background:var(--color-surface-sunken);color:var(--color-ink-mute)">{{ a.period }}</span>
+                    <span style="padding:1px 7px;border-radius:999px;font-size:10px;font-weight:600;background:{{ a.typeBg }};color:{{ a.typeFg }}">{{ a.typeLabel }}</span>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== PRICING & GUARDRAILS ===== -->
+    <sc-if value="{{ isGuardrails }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:18px;max-width:1360px;margin:0 auto">
+        <div style="background:var(--color-spot-soft);border:1px solid var(--color-spot);border-radius:14px;overflow:hidden">
+          <div style="display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--color-spot)">
+            <orion-icon name="SlidersHorizontal" size="16"></orion-icon>
+            <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-spot-deep)">What-if · pricing threshold</span>
+          </div>
+          <div style="padding:20px 22px;display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:center">
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:12.5px;color:var(--color-spot-deep);font-weight:600">Deviation threshold</span>
+                <span style="padding:3px 12px;border-radius:999px;font-size:14px;font-weight:700;background:var(--color-surface);color:var(--color-spot-deep);font-variant-numeric:tabular-nums">{{ whatIf.threshold }}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px">
+                <span style="font-size:11px;color:var(--color-spot-deep);font-variant-numeric:tabular-nums">×1.00</span>
+                <input type="range" min="1" max="1.5" step="0.05" value="{{ whatIfVal }}" onChange="{{ setWhatIf }}" onInput="{{ setWhatIf }}" style="flex:1;accent-color:var(--color-spot);cursor:pointer">
+                <span style="font-size:11px;color:var(--color-spot-deep);font-variant-numeric:tabular-nums">×1.50</span>
+              </div>
+              <p style="margin:0;font-size:11.5px;line-height:1.5;color:var(--color-spot-deep);opacity:.85">Counts binds whose average deviation exceeds the threshold, with the lower band fixed at ×0.90. Raising the threshold monotonically lowers the counts.</p>
+            </div>
+            <div style="display:flex;gap:14px">
+              <div style="flex:1;background:var(--color-surface);border-radius:12px;padding:16px 18px">
+                <div style="font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-ink-mute)">Breached rows</div>
+                <div style="margin-top:6px;font-size:30px;font-weight:600;color:var(--color-ink);font-variant-numeric:tabular-nums;letter-spacing:-.01em">{{ whatIf.rows }}</div>
+              </div>
+              <div style="flex:1;background:var(--color-surface);border-radius:12px;padding:16px 18px">
+                <div style="font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-ink-mute)">Breached binds</div>
+                <div style="margin-top:6px;font-size:30px;font-weight:600;color:var(--color-ink);font-variant-numeric:tabular-nums;letter-spacing:-.01em">{{ whatIf.binds }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Premium deviation distribution</span>
+              <span style="font-size:12px;color:var(--color-ink-soft)">Bind-weighted · shaded band = guardrail ×0.90–×1.20</span>
+            </div>
+            <div style="display:flex;gap:14px;font-size:11px;color:var(--color-ink-soft)">
+              <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:11px;height:11px;border-radius:3px;background:var(--color-info)"></span>in band</span>
+              <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:11px;height:11px;border-radius:3px;background:var(--color-warn)"></span>outside band</span>
+            </div>
+          </div>
+          <div style="padding:18px 22px 14px">
+            <div style="display:flex;align-items:flex-end;gap:10px;height:200px">
+              <sc-for list="{{ histogram }}" as="h" hint-placeholder-count="9">
+                <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px">
+                  <span style="font-size:10.5px;font-weight:600;color:var(--color-ink-soft);font-variant-numeric:tabular-nums">{{ h.count }}</span>
+                  <div style="width:100%;height:{{ h.h }};min-height:3px;border-radius:5px 5px 0 0;background:{{ h.fill }}"></div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:8px">
+              <sc-for list="{{ histogram }}" as="h" hint-placeholder-count="9">
+                <span style="flex:1;text-align:center;font-size:9px;color:var(--color-ink-mute);font-variant-numeric:tabular-nums">{{ h.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1.25fr;gap:16px;align-items:start">
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+            <div style="padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Amber / red by coverage</span>
+            </div>
+            <div style="padding:16px 20px;display:flex;flex-direction:column;gap:15px">
+              <sc-for list="{{ covBreach }}" as="c" hint-placeholder-count="8">
+                <div style="display:grid;grid-template-columns:74px 1fr 56px;gap:12px;align-items:center">
+                  <span style="font-size:12px;font-weight:600;color:var(--color-ink)">{{ c.cov }}</span>
+                  <div style="display:flex;flex-direction:column;gap:4px">
+                    <div style="display:flex;height:11px;border-radius:999px;overflow:hidden;background:var(--color-surface-sunken)">
+                      <div style="width:{{ c.amberW }};background:var(--color-warn)"></div>
+                      <div style="width:{{ c.redW }};background:var(--color-neg)"></div>
+                    </div>
+                    <span style="font-size:10px;color:var(--color-ink-mute);font-variant-numeric:tabular-nums">{{ c.amber }} amber · {{ c.red }} red · {{ c.binds }} binds</span>
+                  </div>
+                  <span style="text-align:right;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:{{ c.pctColor }}">{{ c.pct }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Breach list</span>
+              <span style="font-size:11px;color:var(--color-ink-mute)">newest first · capped at 100</span>
+            </div>
+            <div style="overflow-x:auto"><div style="min-width:560px">
+              <div style="display:grid;grid-template-columns:1.1fr 74px 74px 150px 78px;gap:12px;padding:10px 20px;border-bottom:1px solid var(--color-rule)">
+                <span style="font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute)">Entity · Coverage</span>
+                <span style="font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute)">Period</span>
+                <span style="font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute)">Broker</span>
+                <span style="font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute)">Deviation vs band</span>
+                <span style="font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-mute);text-align:right">Breaches</span>
+              </div>
+              <sc-for list="{{ breachList }}" as="r" hint-placeholder-count="6">
+                <div class="orion-row" style="display:grid;grid-template-columns:1.1fr 74px 74px 150px 78px;gap:12px;align-items:center;padding:11px 20px;border-bottom:1px solid var(--color-rule)">
+                  <div style="display:flex;flex-direction:column;gap:1px">
+                    <span style="font-size:12.5px;font-weight:600;color:var(--color-ink)">{{ r.entity }}</span>
+                    <span style="font-size:10.5px;color:var(--color-ink-mute)">{{ r.coverage }}</span>
+                  </div>
+                  <span style="font-size:11.5px;color:var(--color-ink-soft);font-variant-numeric:tabular-nums">{{ r.period }}</span>
+                  <span style="font-size:11.5px;color:var(--color-ink-soft);font-family:var(--font-mono)">{{ r.broker }}</span>
+                  <div style="display:flex;flex-direction:column;gap:4px">
+                    <div style="position:relative;height:8px;border-radius:999px;background:var(--color-surface-sunken)">
+                      <div style="position:absolute;top:0;bottom:0;left:20%;right:20%;background:var(--color-pos-soft);border-radius:999px"></div>
+                      <div style="position:absolute;top:-2px;width:12px;height:12px;border-radius:50%;border:2px solid var(--color-surface);left:{{ r.dotL }};margin-left:-6px;background:{{ r.dotColor }}"></div>
+                    </div>
+                    <span style="font-size:10px;color:var(--color-ink-mute);font-variant-numeric:tabular-nums">{{ r.dev }} · band {{ r.band }}</span>
+                  </div>
+                  <div style="display:flex;gap:5px;justify-content:flex-end">
+                    <span style="padding:1px 7px;border-radius:999px;font-size:10.5px;font-weight:600;background:var(--color-warn-soft);color:var(--color-warn);font-variant-numeric:tabular-nums">{{ r.amber }}A</span>
+                    <span style="padding:1px 7px;border-radius:999px;font-size:10.5px;font-weight:600;background:var(--color-neg-soft);color:var(--color-neg);font-variant-numeric:tabular-nums">{{ r.red }}R</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div></div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== MARKET PERCEPTION ===== -->
+    <sc-if value="{{ isMarket }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:18px;max-width:1360px;margin:0 auto">
+        <div style="display:flex;align-items:center;gap:10px;padding:11px 16px;background:var(--color-warn-soft);border:1px solid var(--color-warn);border-radius:12px">
+          <orion-icon name="Info" size="16"></orion-icon>
+          <span style="font-size:12px;font-weight:600;color:var(--color-warn)">Illustrative data</span>
+          <span style="font-size:12px;color:var(--color-warn)">— this view is a static fixture, not fed by the ORION API.</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;padding:18px 20px">
+            <div style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Perception index</div>
+            <div style="display:flex;align-items:baseline;gap:6px;margin-top:10px"><span style="font-size:34px;font-weight:600;color:var(--color-ink);font-variant-numeric:tabular-nums;letter-spacing:-.01em">{{ market.perception }}</span><span style="font-size:15px;color:var(--color-ink-mute)">/ 100</span></div>
+            <div style="margin-top:12px;height:8px;border-radius:999px;background:var(--color-surface-sunken);overflow:hidden"><div style="height:100%;width:71%;background:var(--color-info);border-radius:999px"></div></div>
+          </div>
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;padding:18px 20px">
+            <div style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Broker NPS</div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin-top:10px"><span style="font-size:34px;font-weight:600;color:var(--color-pos);font-variant-numeric:tabular-nums;letter-spacing:-.01em">+{{ market.nps }}</span><span style="display:inline-flex;align-items:center;gap:2px;padding:3px 8px;border-radius:999px;font-size:11.5px;font-weight:600;background:var(--color-pos-soft);color:var(--color-pos)"><orion-icon name="ArrowUpRight" size="12"></orion-icon>+6 YoY</span></div>
+            <div style="margin-top:10px;font-size:11.5px;color:var(--color-ink-mute)">promoters less detractors, trailing 12 mo</div>
+          </div>
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;padding:18px 20px">
+            <div style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Avg quote response</div>
+            <div style="display:flex;align-items:baseline;gap:4px;margin-top:10px"><span style="font-size:34px;font-weight:600;color:var(--color-ink);font-variant-numeric:tabular-nums;letter-spacing:-.01em">{{ market.respHours }}</span><span style="font-size:16px;color:var(--color-ink-mute)">h</span></div>
+            <div style="margin-top:10px;font-size:11.5px;color:var(--color-ink-mute)">median time-to-first-quote to brokers</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:16px;align-items:start">
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+            <div style="padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Sentiment by relationship</span>
+            </div>
+            <div style="padding:16px 20px;display:flex;flex-direction:column;gap:14px">
+              <sc-for list="{{ marketSentiment }}" as="s" hint-placeholder-count="6">
+                <div style="display:grid;grid-template-columns:132px 1fr 40px;gap:12px;align-items:center">
+                  <span style="font-size:12px;font-weight:500;color:var(--color-ink)">{{ s.name }}</span>
+                  <div style="height:10px;border-radius:999px;background:var(--color-surface-sunken);overflow:hidden"><div style="height:100%;width:{{ s.w }};background:{{ s.color }};border-radius:999px"></div></div>
+                  <span style="font-size:12px;font-weight:600;color:var(--color-ink);font-variant-numeric:tabular-nums;text-align:right">{{ s.score }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+            <div style="padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Positioning · price vs relationship</span>
+            </div>
+            <div style="padding:14px 18px 10px">
+              <svg viewBox="0 0 268 236" width="100%" style="display:block;font-family:var(--font-sans)">
+                <line x1="44" y1="196" x2="252" y2="196" style="stroke:var(--color-rule-strong);stroke-width:1"></line>
+                <line x1="44" y1="196" x2="44" y2="16" style="stroke:var(--color-rule-strong);stroke-width:1"></line>
+                <line x1="148" y1="196" x2="148" y2="16" style="stroke:var(--color-rule);stroke-width:1;stroke-dasharray:3 3"></line>
+                <line x1="44" y1="106" x2="252" y2="106" style="stroke:var(--color-rule);stroke-width:1;stroke-dasharray:3 3"></line>
+                <sc-for list="{{ marketQuadrant }}" as="p" hint-placeholder-count="5">
+                  <circle cx="{{ p.cx }}" cy="{{ p.cy }}" r="6" style="fill:{{ p.fill }};opacity:.85"></circle>
+                  <text x="{{ p.cx }}" y="{{ p.ty }}" text-anchor="middle" font-size="8.5" style="fill:var(--color-ink-soft)">{{ p.name }}</text>
+                </sc-for>
+                <text x="148" y="216" text-anchor="middle" font-size="9" style="fill:var(--color-ink-mute)">Price competitiveness →</text>
+                <text x="14" y="106" text-anchor="middle" font-size="9" transform="rotate(-90 14 106)" style="fill:var(--color-ink-mute)">Relationship →</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+            <div style="display:flex;align-items:center;gap:8px;padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+              <orion-icon name="TrendingUp" size="15"></orion-icon>
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Why we win</span>
+            </div>
+            <div style="padding:16px 20px;display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ market.winThemes }}" as="t" hint-placeholder-count="5">
+                <span style="padding:6px 12px;border-radius:999px;font-size:12px;font-weight:500;background:var(--color-pos-soft);color:var(--color-pos)">{{ t }}</span>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:14px;overflow:hidden">
+            <div style="display:flex;align-items:center;gap:8px;padding:14px 20px;background:var(--color-surface-elev);border-bottom:1px solid var(--color-rule)">
+              <orion-icon name="TrendingDown" size="15"></orion-icon>
+              <span style="font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--color-ink-mute)">Why we lose</span>
+            </div>
+            <div style="padding:16px 20px;display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ market.lossThemes }}" as="t" hint-placeholder-count="4">
+                <span style="padding:6px 12px;border-radius:999px;font-size:12px;font-weight:500;background:var(--color-neg-soft);color:var(--color-neg)">{{ t }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ===== OPERATIONAL WORKFLOW ===== -->
+    <sc-if value="{{ isWorkflow }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:18px;max-width:1360px;margin:0 auto">
+        <div style="display:flex;align-items:center;gap:10px;padding:11px 16px;background:var(--color-surface-elev);border:1px solid var(--color-rule);border-radius:12px">
+          <orion-icon name="Info" size="16"></orion-icon>
+          <span style="font-size:12px;font-weight:600;color:var(--color-ink)">Demo-local task list</span>
+          <span style="font-size:12px;color:var(--color-ink-soft)">— a lightweight relationship worklist; no ingestion or messaging in scope.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start">
+          <sc-for list="{{ workflow }}" as="col" hint-placeholder-count="4">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:0 4px">
+                <span style="display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--color-ink-soft)"><span style="width:8px;height:8px;border-radius:50%;background:{{ col.tone }}"></span>{{ col.label }}</span>
+                <span style="font-size:11px;color:var(--color-ink-mute);font-variant-numeric:tabular-nums">{{ col.count }}</span>
+              </div>
+              <sc-for list="{{ col.tasks }}" as="t" hint-placeholder-count="2">
+                <div class="orion-ctrl" style="background:var(--color-surface);border:1px solid var(--color-rule);border-radius:11px;padding:13px 14px;display:flex;flex-direction:column;gap:11px;cursor:pointer">
+                  <span style="font-size:12.5px;line-height:1.4;font-weight:500;color:var(--color-ink)">{{ t.title }}</span>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                    <div style="display:flex;align-items:center;gap:6px">
+                      <span style="padding:2px 8px;border-radius:999px;font-size:10px;font-weight:600;background:var(--color-surface-sunken);color:var(--color-ink-soft)">{{ t.entity }}</span>
+                      <span style="padding:2px 8px;border-radius:999px;font-size:10px;font-weight:600;background:{{ t.priBg }};color:{{ t.priFg }}">{{ t.pri }}</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <span style="font-size:10.5px;color:var(--color-ink-mute);font-variant-numeric:tabular-nums">{{ t.due }}</span>
+                      <span style="width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--color-chrome);color:var(--color-canvas);font-size:9px;font-weight:700">{{ t.who }}</span>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1024},&quot;startTab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;executive&quot;,&quot;brokers&quot;,&quot;exposure&quot;,&quot;guardrails&quot;,&quot;market&quot;,&quot;workflow&quot;],&quot;default&quot;:&quot;executive&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Display&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Display&quot;}}">
+class Component extends DCLogic {
+  state = { activeTab: null, theme: null, selectedBroker: null, whatIf: 1.25 };
+
+  TAB_DEFS = [
+    { id: 'executive', label: 'Executive', icon: 'LayoutDashboard' },
+    { id: 'brokers', label: 'Broker Performance', icon: 'Users' },
+    { id: 'exposure', label: 'Exposure', icon: 'Layers' },
+    { id: 'guardrails', label: 'Pricing & Guardrails', icon: 'Gauge' },
+    { id: 'market', label: 'Market Perception', icon: 'Radar' },
+    { id: 'workflow', label: 'Operational Workflow', icon: 'ListChecks' },
+  ];
+
+  FILTERS = [
+    { label: 'Entity', value: 'MSRE · Global' },
+    { label: 'Coverage', value: 'All' },
+    { label: 'Region', value: 'All' },
+    { label: 'Tier', value: 'All' },
+    { label: 'Period', value: 'Aug 25 – Jul 26' },
+  ];
+
+  SERIES = [
+    { m: 'Aug', gwp: 104.6, plan: 111.9, hr: 0.3312 },
+    { m: 'Sep', gwp: 108.2, plan: 115.0, hr: 0.3285 },
+    { m: 'Oct', gwp: 112.5, plan: 118.4, hr: 0.3350 },
+    { m: 'Nov', gwp: 116.1, plan: 121.0, hr: 0.3402 },
+    { m: 'Dec', gwp: 119.8, plan: 124.6, hr: 0.3290 },
+    { m: 'Jan', gwp: 113.4, plan: 120.2, hr: 0.3221 },
+    { m: 'Feb', gwp: 117.9, plan: 123.1, hr: 0.3308 },
+    { m: 'Mar', gwp: 121.2, plan: 126.0, hr: 0.3375 },
+    { m: 'Apr', gwp: 118.6, plan: 127.3, hr: 0.3260 },
+    { m: 'May', gwp: 124.0, plan: 128.1, hr: 0.3419 },
+    { m: 'Jun', gwp: 120.5, plan: 128.8, hr: 0.3298 },
+    { m: 'Jul', gwp: 122.9, plan: 129.2, hr: 0.3340 },
+  ];
+
+  KPI_DEFS = [
+    { icon: 'Target', eyebrow: 'Group hit ratio', value: '33.3%', sub: 'bound / quoted · vs 33.4% plan', mom: 0.0094, dir: 'up' },
+    { icon: 'ShieldAlert', eyebrow: 'Guardrail breach rate', value: '9.7%', sub: 'of binds outside pricing band', mom: -0.1535, dir: 'down' },
+    { icon: 'TrendingUp', eyebrow: 'GWP plan attainment', value: '95.3%', sub: '$122.9M of $129.2M plan', mom: 0.0100, dir: 'up' },
+    { icon: 'Layers', eyebrow: 'Total exposure (limit)', value: '$22.9B', sub: 'aggregate limit in force', mom: 0.0968, dir: 'neutral' },
+  ];
+
+  TOP_BROKERS = [
+    { rank: 1, name: 'Denholm Risk (001)', tier: 'PLATINUM', region: 'Europe', gwp: '$68.4M', hr: '42.8%' },
+    { rank: 2, name: 'Kessler Marine (002)', tier: 'PLATINUM', region: 'North America', gwp: '$54.1M', hr: '41.2%' },
+    { rank: 3, name: 'Aldgate Speciality (005)', tier: 'PLATINUM', region: 'UK', gwp: '$49.7M', hr: '40.5%' },
+    { rank: 4, name: 'Halvers Risk (003)', tier: 'PLATINUM', region: 'APAC', gwp: '$46.2M', hr: '38.7%' },
+    { rank: 5, name: 'Trant & Cole (009)', tier: 'GOLD', region: 'Japan', gwp: '$41.8M', hr: '39.1%' },
+  ];
+
+  ALERTS = [
+    { sev: 'red', type: 'guardrail_breach', entity: 'AMLIN', coverage: 'CYBER', period: 'Jul 2026', message: 'AMLIN / CYBER 2026-07: 4 red / 16 amber guardrail breaches against the 0.90–1.20 pricing band.' },
+    { sev: 'red', type: 'guardrail_breach', entity: 'MSEU', coverage: 'ENERGY', period: 'Jul 2026', message: 'MSEU / ENERGY 2026-07: 3 red / 12 amber guardrail breaches; average deviation ×0.94.' },
+    { sev: 'amber', type: 'guardrail_breach', entity: 'MSIGUSA', coverage: 'PROPERTY', period: 'Jul 2026', message: 'MSIGUSA / PROPERTY 2026-07: 0 red / 9 amber guardrail breaches.' },
+    { sev: 'red', type: 'aggregate_limit_breach', entity: 'AMLIN', coverage: 'CYBER', period: 'Oct 2025', message: 'AMLIN / CYBER 2025-10: top-client exposure $11.62M exceeds aggregate limit $10.42M.' },
+    { sev: 'amber', type: 'aggregate_limit_breach', entity: 'MSRE', coverage: 'MARINE', period: 'Jun 2026', message: 'MSRE / MARINE 2026-06: top-client exposure $8.30M approaching aggregate limit $8.75M.' },
+    { sev: 'amber', type: 'hit_ratio_below_plan', entity: 'MSIJ', coverage: 'CASUALTY', period: 'Jul 2026', message: 'MSIJ / CASUALTY 2026-07: hit ratio 24.1% is 6.9pts below plan of 31.0%.' },
+    { sev: 'amber', type: 'hit_ratio_below_plan', entity: 'MSEU', coverage: 'PI', period: 'Jul 2026', message: 'MSEU / PI 2026-07: hit ratio 22.8% is 6.7pts below plan of 29.5%.' },
+    { sev: 'amber', type: 'hit_ratio_below_plan', entity: 'AMLIN', coverage: 'FI', period: 'Jun 2026', message: 'AMLIN / FI 2026-06: hit ratio 19.4% is 7.8pts below plan of 27.2%.' },
+  ];
+
+  PLAN_ROWS = [
+    { entity: 'MSRE', coverage: 'Directors & Officers', planGwp: '$13.6M', actGwp: '$13.2M', att: 0.9676, hr: '36.7%', hrVar: 0.047, lr: '57.0%', lrVar: 0.0845, flags: ['GWP_BELOW_PLAN', 'LOSS_RATIO_ABOVE_PLAN'] },
+    { entity: 'MSRE', coverage: 'Property', planGwp: '$24.1M', actGwp: '$25.3M', att: 1.0498, hr: '37.2%', hrVar: 0.022, lr: '49.0%', lrVar: -0.030, flags: [] },
+    { entity: 'AMLIN', coverage: 'Cyber', planGwp: '$9.8M', actGwp: '$8.1M', att: 0.8265, hr: '25.8%', hrVar: -0.042, lr: '71.0%', lrVar: 0.160, flags: ['GWP_BELOW_PLAN', 'HIT_RATIO_BELOW_PLAN', 'LOSS_RATIO_ABOVE_PLAN'] },
+    { entity: 'AMLIN', coverage: 'Property', planGwp: '$18.4M', actGwp: '$18.0M', att: 0.9783, hr: '35.1%', hrVar: 0.011, lr: '47.0%', lrVar: -0.030, flags: ['GWP_BELOW_PLAN'] },
+    { entity: 'MSEU', coverage: 'Energy', planGwp: '$15.2M', actGwp: '$14.1M', att: 0.9276, hr: '30.5%', hrVar: -0.025, lr: '60.0%', lrVar: 0.120, flags: ['GWP_BELOW_PLAN', 'HIT_RATIO_BELOW_PLAN', 'LOSS_RATIO_ABOVE_PLAN'] },
+    { entity: 'MSEU', coverage: 'Marine', planGwp: '$11.0M', actGwp: '$11.6M', att: 1.0545, hr: '32.9%', hrVar: 0.019, lr: null, lrVar: null, flags: [] },
+    { entity: 'MSIJ', coverage: 'Casualty', planGwp: '$12.6M', actGwp: '$11.2M', att: 0.8889, hr: '24.1%', hrVar: -0.069, lr: '53.0%', lrVar: 0.030, flags: ['GWP_BELOW_PLAN', 'HIT_RATIO_BELOW_PLAN'] },
+    { entity: 'MSIGUSA', coverage: 'Property', planGwp: '$21.0M', actGwp: '$21.4M', att: 1.0190, hr: '36.8%', hrVar: 0.008, lr: '46.0%', lrVar: -0.030, flags: [] },
+  ];
+
+  FLAG_LABELS = { GWP_BELOW_PLAN: 'GWP < plan', HIT_RATIO_BELOW_PLAN: 'Hit < plan', LOSS_RATIO_ABOVE_PLAN: 'Loss > plan' };
+
+  TIER_STYLE = {
+    PLATINUM: { bg: 'var(--color-info-soft)', fg: 'var(--color-info-deep)' },
+    GOLD: { bg: 'var(--color-warn-soft)', fg: 'var(--color-warn)' },
+    SILVER: { bg: 'var(--color-surface-sunken)', fg: 'var(--color-ink-soft)' },
+    BRONZE: { bg: '#f0e2d6', fg: '#8a4a24' },
+  };
+
+  toggleTheme = () => {
+    const cur = this.state.theme != null ? this.state.theme : (this.props.theme || 'light');
+    this.setState({ theme: cur === 'dark' ? 'light' : 'dark' });
+  };
+
+  signPct(f, dp) {
+    const v = (f * 100);
+    return (v >= 0 ? '+' : '') + v.toFixed(dp == null ? 1 : dp) + '%';
+  }
+  signPts(f) {
+    const v = f * 100;
+    return (v >= 0 ? '+' : '') + v.toFixed(1);
+  }
+
+  buildChart() {
+    const S = this.SERIES;
+    const W = 1000, H = 344, L = 56, R = 54, T = 42, B = 50;
+    const pw = W - L - R, ph = H - T - B, n = S.length, slot = pw / n;
+    const moneyMax = 168, rMin = 0.26, rMax = 0.38;
+    const bars = [], dots = [], xLabels = [], valueLabels = [], hitLabels = [];
+    let linePath = '';
+    S.forEach((d, i) => {
+      const bw = 15, gap = 6, pairW = bw * 2 + gap;
+      const sx = L + i * slot + (slot - pairW) / 2;
+      const planH = d.plan / moneyMax * ph, actH = d.gwp / moneyMax * ph;
+      bars.push({ x: sx, y: T + ph - planH, w: bw, h: planH, fill: 'var(--color-info-soft)', stroke: 'var(--color-info)', sw: 0.9 });
+      bars.push({ x: sx + bw + gap, y: T + ph - actH, w: bw, h: actH, fill: 'var(--color-info)', stroke: 'none', sw: 0 });
+      const cx = sx + pairW / 2, cy = T + (rMax - d.hr) / (rMax - rMin) * ph;
+      dots.push({ cx: +cx.toFixed(1), cy: +cy.toFixed(1) });
+      linePath += (i ? 'L' : 'M') + cx.toFixed(1) + ' ' + cy.toFixed(1) + ' ';
+      xLabels.push({ x: +(L + i * slot + slot / 2).toFixed(1), label: d.m });
+      valueLabels.push({ x: +cx.toFixed(1), y: +(T + ph - Math.max(planH, actH) - 11).toFixed(1), text: Math.round(d.gwp).toString() });
+      hitLabels.push({ x: +cx.toFixed(1), y: +(cy - 11).toFixed(1), text: (d.hr * 100).toFixed(1) });
+    });
+    const grid = [0, 40, 80, 120, 160].map(v => {
+      const y = T + ph - (v / moneyMax * ph);
+      return { y: +y.toFixed(1), ty: +(y + 3.5).toFixed(1), label: v === 0 ? '$0' : '$' + v + 'M' };
+    });
+    const rTicks = [0.28, 0.32, 0.36].map(v => {
+      const y = T + (rMax - v) / (rMax - rMin) * ph;
+      return { ty: +(y + 3.5).toFixed(1), label: (v * 100).toFixed(0) + '%' };
+    });
+    return { bars, dots, grid, rTicks, linePath: linePath.trim(), xLabels, valueLabels, hitLabels, bottomY: H - 12, table: S.map(d => ({ m: d.m, actual: Math.round(d.gwp).toString(), plan: Math.round(d.plan).toString(), hit: (d.hr * 100).toFixed(1) + '%' })), plotL: L, plotR: W - R, moneyLabelX: L - 10, ratioLabelX: W - R + 8 };
+  }
+
+  buildKpis() {
+    return this.KPI_DEFS.map(k => {
+      const good = k.dir === 'neutral' ? null : ((k.mom > 0 && k.dir === 'up') || (k.mom < 0 && k.dir === 'down'));
+      const bg = good == null ? 'var(--color-surface-sunken)' : (good ? 'var(--color-pos-soft)' : 'var(--color-neg-soft)');
+      const fg = good == null ? 'var(--color-ink-soft)' : (good ? 'var(--color-pos)' : 'var(--color-neg)');
+      return { ...k, trendBg: bg, trendFg: fg, trendIcon: k.mom >= 0 ? 'ArrowUpRight' : 'ArrowDownRight', trendLabel: this.signPct(k.mom) };
+    });
+  }
+
+  buildPlanRows() {
+    return this.PLAN_ROWS.map(r => {
+      const attColor = r.att >= 1 ? 'var(--color-pos)' : (r.att >= 0.95 ? 'var(--color-warn)' : 'var(--color-neg)');
+      const hrGood = r.hrVar >= 0;
+      const lrGood = r.lrVar != null && r.lrVar <= 0;
+      return {
+        entity: r.entity, coverage: r.coverage, planGwp: r.planGwp, actGwp: r.actGwp,
+        att: (r.att * 100).toFixed(1) + '%',
+        attW: Math.min(100, r.att * 100).toFixed(1) + '%',
+        attColor,
+        hr: r.hr, hrVar: this.signPts(r.hrVar),
+        hrVarBg: hrGood ? 'var(--color-pos-soft)' : 'var(--color-neg-soft)',
+        hrVarFg: hrGood ? 'var(--color-pos)' : 'var(--color-neg)',
+        lr: r.lr == null ? '—' : r.lr,
+        lrVar: r.lrVar == null ? '—' : this.signPts(r.lrVar),
+        lrVarBg: r.lrVar == null ? 'var(--color-surface-sunken)' : (lrGood ? 'var(--color-pos-soft)' : 'var(--color-neg-soft)'),
+        lrVarFg: r.lrVar == null ? 'var(--color-ink-mute)' : (lrGood ? 'var(--color-pos)' : 'var(--color-neg)'),
+        flags: r.flags.map(f => this.FLAG_LABELS[f] || f),
+        onPlan: r.flags.length === 0,
+      };
+    });
+  }
+
+  buildAlerts() {
+    const TYPE = {
+      guardrail_breach: { label: 'guardrail', bg: 'var(--color-warn-soft)', fg: 'var(--color-warn)' },
+      aggregate_limit_breach: { label: 'aggregate limit', bg: 'var(--color-aux-soft)', fg: 'var(--color-aux)' },
+      hit_ratio_below_plan: { label: 'hit vs plan', bg: 'var(--color-spot-soft)', fg: 'var(--color-spot-deep)' },
+    };
+    return this.ALERTS.map(a => {
+      const t = TYPE[a.type];
+      return { message: a.message, entity: a.entity, coverage: a.coverage, period: a.period, dot: a.sev === 'red' ? 'var(--color-neg)' : 'var(--color-warn)', typeLabel: t.label, typeBg: t.bg, typeFg: t.fg };
+    });
+  }
+
+  buildTopBrokers() {
+    return this.TOP_BROKERS.map(b => ({ ...b, tierBg: this.TIER_STYLE[b.tier].bg, tierFg: this.TIER_STYLE[b.tier].fg }));
+  }
+
+  fmtMoney(n) {
+    if (n == null) return '—';
+    const a = Math.abs(n);
+    if (a >= 1e9) return '$' + (n / 1e9).toFixed(a >= 1e10 ? 1 : 2) + 'B';
+    if (a >= 1e6) return '$' + (n / 1e6).toFixed(1) + 'M';
+    if (a >= 1e3) return '$' + (n / 1e3).toFixed(0) + 'K';
+    return '$' + n.toFixed(0);
+  }
+  pctStr(f, dp) { return f == null ? '—' : (f * 100).toFixed(dp == null ? 1 : dp) + '%'; }
+
+  BROKERS = [
+    { id: 'BR-0001', name: 'Denholm Risk (001)', group: null, tier: 'PLATINUM', region: 'Europe', hr: 0.4282, gwp: 68417285, brokerage: 13812068, dev: 1.0108, lr: 0.6378, isNew: false, sow: null, spark: [6.33, 6.91, 7.20, 7.02, 7.58, 6.81, 7.14, 7.42, 7.05, 7.71, 7.20, 5.51] },
+    { id: 'BR-0002', name: 'Kessler Marine (002)', group: 'Granite Bay', tier: 'PLATINUM', region: 'North America', hr: 0.4123, gwp: 54102993, brokerage: 10820599, dev: 0.9721, lr: 0.5512, isNew: false, sow: 0.4870, spark: [4.10, 4.42, 4.65, 4.80, 4.55, 4.72, 4.90, 4.61, 4.88, 5.02, 4.74, 4.28] },
+    { id: 'BR-0003', name: 'Halvers Risk (003)', group: 'Granite Bay', tier: 'PLATINUM', region: 'APAC', hr: 0.3869, gwp: 46255120, brokerage: 9713575, dev: 1.0559, lr: 0.5934, isNew: false, sow: 0.5458, spark: [3.60, 3.82, 3.71, 3.95, 4.02, 3.78, 4.11, 3.90, 4.20, 3.86, 4.05, 5.51] },
+    { id: 'BR-0005', name: 'Aldgate Speciality (005)', group: null, tier: 'PLATINUM', region: 'UK', hr: 0.4051, gwp: 49712880, brokerage: 9942576, dev: 1.1902, lr: 0.6021, isNew: false, sow: null, spark: [3.90, 4.10, 4.32, 4.05, 4.41, 4.20, 4.55, 4.28, 4.60, 4.35, 4.48, 4.02] },
+    { id: 'BR-0009', name: 'Trant & Cole (009)', group: 'Meridian', tier: 'GOLD', region: 'Japan', hr: 0.3910, gwp: 41809233, brokerage: 8361847, dev: 0.8830, lr: null, isNew: true, sow: 0.3120, spark: [3.10, 3.35, 3.52, 3.28, 3.60, 3.42, 3.71, 3.48, 3.65, 3.55, 3.62, 3.41] },
+    { id: 'BR-0012', name: 'Okonkwo Broking (012)', group: null, tier: 'GOLD', region: 'Middle East', hr: 0.3402, gwp: 33280190, brokerage: 6656038, dev: 1.0330, lr: 0.6712, isNew: false, sow: null, spark: [2.55, 2.72, 2.61, 2.85, 2.70, 2.90, 2.75, 2.95, 2.80, 3.01, 2.86, 2.62] },
+    { id: 'BR-0018', name: 'Basel Re Partners (018)', group: 'Meridian', tier: 'GOLD', region: 'Europe', hr: 0.3588, gwp: 29904417, brokerage: 5980883, dev: 1.2450, lr: 0.5233, isNew: false, sow: 0.2810, spark: [2.30, 2.48, 2.61, 2.42, 2.55, 2.68, 2.50, 2.63, 2.45, 2.58, 2.51, 2.40] },
+    { id: 'BR-0021', name: 'Sato & Lindqvist (021)', group: null, tier: 'SILVER', region: 'Japan', hr: 0.2955, gwp: 21507664, brokerage: 4301533, dev: 1.0044, lr: 0.7401, isNew: false, sow: null, spark: [1.65, 1.78, 1.71, 1.85, 1.74, 1.90, 1.80, 1.88, 1.76, 1.92, 1.83, 1.68] },
+    { id: 'BR-0027', name: 'Harbourline (027)', group: 'Granite Bay', tier: 'SILVER', region: 'North America', hr: 0.2740, gwp: 18342905, brokerage: 3668581, dev: 0.9560, lr: null, isNew: false, sow: 0.1930, spark: [1.40, 1.52, 1.61, 1.48, 1.55, 1.63, 1.50, 1.58, 1.45, 1.60, 1.53, 1.42] },
+    { id: 'BR-0034', name: 'Pfeiffer Risk (034)', group: null, tier: 'SILVER', region: 'Europe', hr: null, gwp: 12904220, brokerage: 2580844, dev: null, lr: null, isNew: false, sow: null, spark: [1.05, 1.12, 1.08, 1.15, 1.10, 1.18, 1.09, 1.14, 1.06, 1.16, 1.11, 1.02] },
+    { id: 'BR-0041', name: 'Village & Ross (041)', group: null, tier: 'BRONZE', region: 'LATAM', hr: 0.2233, gwp: 9805412, brokerage: 1961082, dev: 1.1503, lr: 0.6890, isNew: false, sow: null, spark: [0.72, 0.80, 0.85, 0.78, 0.83, 0.88, 0.80, 0.86, 0.76, 0.84, 0.81, 0.74] },
+    { id: 'BR-0052', name: 'Emeka Cover (052)', group: 'Meridian', tier: 'BRONZE', region: 'APAC', hr: 0.2101, gwp: 7612880, brokerage: 1522576, dev: 0.9902, lr: 0.7050, isNew: false, sow: 0.1450, spark: [0.55, 0.62, 0.66, 0.60, 0.64, 0.68, 0.61, 0.66, 0.58, 0.65, 0.62, 0.56] },
+  ];
+
+  buildSpark(arr, w, h) {
+    const pad = 3, lo = Math.min(...arr), hi = Math.max(...arr), rng = (hi - lo) || 1;
+    const pts = arr.map((v, i) => {
+      const x = pad + i / (arr.length - 1) * (w - pad * 2);
+      const y = h - pad - (v - lo) / rng * (h - pad * 2);
+      return [+x.toFixed(1), +y.toFixed(1)];
+    });
+    const line = pts.map((p, i) => (i ? 'L' : 'M') + p[0] + ' ' + p[1]).join(' ');
+    const area = 'M' + pts[0][0] + ' ' + (h - pad) + ' ' + pts.map(p => 'L' + p[0] + ' ' + p[1]).join(' ') + ' L' + pts[pts.length - 1][0] + ' ' + (h - pad) + ' Z';
+    return { line, area };
+  }
+
+  buildBrokers() {
+    return this.BROKERS.map((b, i) => {
+      const ts = this.TIER_STYLE[b.tier];
+      const devOut = b.dev != null && (b.dev < 0.90 || b.dev > 1.20);
+      const sp = this.buildSpark(b.spark, 104, 30);
+      return {
+        raw: b, rank: i + 1, id: b.id, name: b.name,
+        group: b.group || '—', hasGroup: !!b.group,
+        tier: b.tier, tierBg: ts.bg, tierFg: ts.fg, region: b.region,
+        hr: this.pctStr(b.hr), gwp: this.fmtMoney(b.gwp), brokerage: this.fmtMoney(b.brokerage),
+        dev: b.dev == null ? '—' : '×' + b.dev.toFixed(2),
+        devBg: devOut ? 'var(--color-warn-soft)' : 'transparent',
+        devFg: devOut ? 'var(--color-warn)' : 'var(--color-ink)',
+        lr: this.pctStr(b.lr), lrColor: b.lr == null ? 'var(--color-ink-mute)' : 'var(--color-ink)',
+        sparkLine: sp.line, sparkArea: sp.area,
+        onOpen: () => this.setState({ selectedBroker: i }),
+      };
+    });
+  }
+
+  buildProfile() {
+    const idx = this.state.selectedBroker;
+    if (idx == null) return null;
+    const b = this.BROKERS[idx];
+    const ts = this.TIER_STYLE[b.tier];
+    const months = ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
+    const baseHr = b.hr || 0.28;
+    const monthly = b.spark.map((g, i) => {
+      const quotes = Math.round(g * 22 + 40);
+      const hr = Math.max(0.16, Math.min(0.52, baseHr + Math.sin(i * 1.3) * 0.03));
+      const binds = Math.round(quotes * hr);
+      return { m: months[i], quotes, binds, hr };
+    });
+    const maxQ = Math.max(...monthly.map(m => m.quotes));
+    const W = 520, H = 150, L = 8, R = 8, T = 12, Bp = 24, pw = W - L - R, ph = H - T - Bp, slot = pw / 12;
+    const rMin = 0.14, rMax = 0.54;
+    const mBars = [], mDots = []; let mLine = '';
+    monthly.forEach((d, i) => {
+      const bw = 9, gap = 4, pairW = bw * 2 + gap, sx = L + i * slot + (slot - pairW) / 2;
+      const qh = d.quotes / maxQ * ph, bh = d.binds / maxQ * ph;
+      mBars.push({ x: +sx.toFixed(1), y: +(T + ph - qh).toFixed(1), w: bw, h: +qh.toFixed(1), fill: 'var(--color-surface-sunken)', stroke: 'var(--color-rule-strong)', sw: 0.8 });
+      mBars.push({ x: +(sx + bw + gap).toFixed(1), y: +(T + ph - bh).toFixed(1), w: bw, h: +bh.toFixed(1), fill: 'var(--color-info)', stroke: 'none', sw: 0 });
+      const cx = sx + pairW / 2, cy = T + (rMax - d.hr) / (rMax - rMin) * ph;
+      mDots.push({ cx: +cx.toFixed(1), cy: +cy.toFixed(1) });
+      mLine += (i ? 'L' : 'M') + cx.toFixed(1) + ' ' + cy.toFixed(1) + ' ';
+      mBars.xl = mBars.xl || [];
+    });
+    const mLabels = monthly.map((d, i) => ({ x: +(L + i * slot + slot / 2).toFixed(1), label: d.m }));
+    const covNames = { PLATINUM: ['Energy', 'Property', 'Marine', 'Casualty', 'Cyber'], GOLD: ['Property', 'Casualty', 'Marine', 'D&O', 'PI'], SILVER: ['Property', 'Marine', 'PI', 'FI', 'Cyber'], BRONZE: ['Property', 'PI', 'Marine', 'FI', 'D&O'] }[b.tier];
+    const weights = [0.34, 0.26, 0.18, 0.13, 0.09];
+    const coverages = covNames.map((c, i) => ({ name: c, gwp: b.gwp * weights[i], hr: Math.max(0.18, (b.hr || 0.28) + (2 - i) * 0.02) }));
+    const covMax = coverages[0].gwp;
+    const sowDeg = b.sow != null ? b.sow * 360 : 0;
+    return {
+      id: b.id, name: b.name, tier: b.tier, tierBg: ts.bg, tierFg: ts.fg,
+      group: b.group, hasGroup: !!b.group, noGroup: !b.group, region: b.region, isNew: b.isNew,
+      hr: this.pctStr(b.hr), gwp: this.fmtMoney(b.gwp), brokerage: this.fmtMoney(b.brokerage),
+      lr: this.pctStr(b.lr), dev: b.dev == null ? '—' : '×' + b.dev.toFixed(2),
+      sow: b.sow != null ? (b.sow * 100).toFixed(1) + '%' : null,
+      sowDash: (b.sow != null ? (b.sow * 100).toFixed(1) : 0) + ', 100',
+      mBars, mDots, mLine: mLine.trim(), mLabels,
+      coverages: coverages.map(c => ({ name: c.name, gwp: this.fmtMoney(c.gwp), hr: this.pctStr(c.hr), w: (c.gwp / covMax * 100).toFixed(1) + '%' })),
+      close: () => this.setState({ selectedBroker: null }),
+    };
+  }
+
+  EXP_REGION = [
+    { name: 'Middle East', limit: 5295609886, gwp: 312023944 },
+    { name: 'North America', limit: 4818440210, gwp: 356401220 },
+    { name: 'Europe', limit: 4152880330, gwp: 402118755 },
+    { name: 'APAC', limit: 3284119044, gwp: 268744109 },
+    { name: 'UK', limit: 2711559820, gwp: 331520447 },
+    { name: 'Japan', limit: 1943221765, gwp: 240311902 },
+    { name: 'LATAM', limit: 712088002, gwp: 61224288 },
+  ];
+  EXP_COVERAGE = [
+    { name: 'ENERGY', limit: 8526140802, gwp: 520844242 },
+    { name: 'PROPERTY', limit: 5124880110, gwp: 611402338 },
+    { name: 'MARINE', limit: 3440221900, gwp: 214905571 },
+    { name: 'CASUALTY', limit: 2610455320, gwp: 388211044 },
+    { name: 'CYBER', limit: 1284770650, gwp: 279540118 },
+    { name: 'FI', limit: 980221400, gwp: 132744902 },
+    { name: 'DO', limit: 712330800, gwp: 141002554 },
+    { name: 'PI', limit: 531009870, gwp: 97844120 },
+  ];
+  TOP_CLIENTS = [
+    { ref: 'CL-7375', industry: 'MANUFACTURING', limit: 28220382, entity: 'MSIGUSA' },
+    { ref: 'CL-4182', industry: 'ENERGY', limit: 24612905, entity: 'MSEU' },
+    { ref: 'CL-9043', industry: 'FINANCIAL SERVICES', limit: 21903440, entity: 'AMLIN' },
+    { ref: 'CL-2261', industry: 'MARINE & LOGISTICS', limit: 19441220, entity: 'MSRE' },
+    { ref: 'CL-8817', industry: 'TECHNOLOGY', limit: 17820665, entity: 'MSIGUSA' },
+    { ref: 'CL-3390', industry: 'PHARMACEUTICALS', limit: 16054900, entity: 'MSEU' },
+    { ref: 'CL-6628', industry: 'UTILITIES', limit: 14771330, entity: 'MSRE' },
+    { ref: 'CL-1204', industry: 'CONSTRUCTION', limit: 13509870, entity: 'AMLIN' },
+    { ref: 'CL-7751', industry: 'AVIATION', limit: 12661044, entity: 'MSIJ' },
+    { ref: 'CL-5093', industry: 'RETAIL', limit: 11380221, entity: 'MSIGUSA' },
+  ];
+  EXP_ALERTS = [
+    { sev: 'red', type: 'aggregate_limit_breach', entity: 'AMLIN', coverage: 'CYBER', period: 'Oct 2025', message: 'AMLIN / CYBER 2025-10: top-client exposure $11.62M exceeds aggregate limit $10.42M.' },
+    { sev: 'amber', type: 'aggregate_limit_breach', entity: 'MSRE', coverage: 'MARINE', period: 'Jun 2026', message: 'MSRE / MARINE 2026-06: top-client exposure $8.30M approaching aggregate limit $8.75M (95%).' },
+    { sev: 'amber', type: 'aggregate_limit_breach', entity: 'MSIGUSA', coverage: 'PROPERTY', period: 'Jul 2026', message: 'MSIGUSA / PROPERTY 2026-07: single-risk limit $28.22M is 41% of the coverage aggregate.' },
+  ];
+
+  buildExpBars(rows) {
+    const max = Math.max(...rows.map(r => r.limit));
+    return rows.map(r => ({ name: r.name, limit: this.fmtMoney(r.limit), gwp: this.fmtMoney(r.gwp), w: (r.limit / max * 100).toFixed(1) + '%' }));
+  }
+  buildTopClients() {
+    const ENT = { MSRE: 'aux', AMLIN: 'info', MSEU: 'pos', MSIJ: 'spot', MSIGUSA: 'warn' };
+    const map = { aux: ['var(--color-aux-soft)', 'var(--color-aux)'], info: ['var(--color-info-soft)', 'var(--color-info-deep)'], pos: ['var(--color-pos-soft)', 'var(--color-pos)'], spot: ['var(--color-spot-soft)', 'var(--color-spot-deep)'], warn: ['var(--color-warn-soft)', 'var(--color-warn)'] };
+    return this.TOP_CLIENTS.map((c, i) => { const t = map[ENT[c.entity]]; return { rank: i + 1, ref: c.ref, industry: c.industry, limit: this.fmtMoney(c.limit), entity: c.entity, entBg: t[0], entFg: t[1] }; });
+  }
+  buildLorenz() {
+    const p = 3.44, N = 40, L = 42, Rr = 244, T = 18, Bp = 192;
+    const sx = x => L + x * (Rr - L), sy = y => Bp - y * (Bp - T);
+    let curve = '';
+    for (let i = 0; i <= N; i++) { const x = i / N, y = Math.pow(x, p); curve += (i ? 'L' : 'M') + sx(x).toFixed(1) + ' ' + sy(y).toFixed(1) + ' '; }
+    const area = 'M' + sx(0) + ' ' + sy(0) + ' ' + curve.replace('M', '').trim() + ' L' + sx(1) + ' ' + sy(0) + ' Z';
+    return { curve: curve.trim(), area, diag: { x1: sx(0), y1: sy(0), x2: sx(1), y2: sy(1) }, ox: sx(0), oy: sy(0), ex: sx(1), ey: sy(0), ty: sy(1), gini: '0.55' };
+  }
+
+  GH_HIST = [
+    { label: '<0.80', count: 56, out: true },
+    { label: '0.80–0.90', count: 832, out: true },
+    { label: '0.90–0.95', count: 1985, out: false },
+    { label: '0.95–1.00', count: 4403, out: false },
+    { label: '1.00–1.05', count: 5693, out: false },
+    { label: '1.05–1.10', count: 2271, out: false },
+    { label: '1.10–1.20', count: 812, out: false },
+    { label: '1.20–1.30', count: 143, out: true },
+    { label: '≥1.30', count: 17, out: true },
+  ];
+  GH_COVERAGE = [
+    { cov: 'CYBER', amber: 371, red: 102, binds: 2154, pct: 0.2196 },
+    { cov: 'ENERGY', amber: 402, red: 88, binds: 2680, pct: 0.1828 },
+    { cov: 'MARINE', amber: 128, red: 22, binds: 1610, pct: 0.0932 },
+    { cov: 'PROPERTY', amber: 210, red: 35, binds: 3120, pct: 0.0785 },
+    { cov: 'CASUALTY', amber: 96, red: 14, binds: 1490, pct: 0.0738 },
+    { cov: 'DO', amber: 33, red: 6, binds: 560, pct: 0.0696 },
+    { cov: 'FI', amber: 41, red: 9, binds: 720, pct: 0.0694 },
+    { cov: 'PI', amber: 18, red: 3, binds: 480, pct: 0.0438 },
+  ];
+  GH_BREACH = [
+    { entity: 'AMLIN', coverage: 'CYBER', period: 'Jul 2026', broker: 'BR-0001', dev: 0.9722, gl: 0.9, gh: 1.2, amber: 7, red: 0 },
+    { entity: 'MSEU', coverage: 'ENERGY', period: 'Jul 2026', broker: 'BR-0009', dev: 0.8630, gl: 0.9, gh: 1.2, amber: 5, red: 3 },
+    { entity: 'AMLIN', coverage: 'CYBER', period: 'Jul 2026', broker: 'BR-0018', dev: 1.2450, gl: 0.9, gh: 1.2, amber: 4, red: 2 },
+    { entity: 'MSIGUSA', coverage: 'PROPERTY', period: 'Jun 2026', broker: 'BR-0005', dev: 1.2110, gl: 0.9, gh: 1.2, amber: 9, red: 0 },
+    { entity: 'MSRE', coverage: 'DO', period: 'Jun 2026', broker: 'BR-0012', dev: 0.8820, gl: 0.9, gh: 1.2, amber: 3, red: 1 },
+    { entity: 'MSIJ', coverage: 'CASUALTY', period: 'Jul 2026', broker: 'BR-0021', dev: 1.0440, gl: null, gh: null, amber: 2, red: 0 },
+  ];
+
+  buildHistogram() {
+    const max = Math.max(...this.GH_HIST.map(b => b.count));
+    return this.GH_HIST.map(b => ({ label: b.label, count: b.count.toLocaleString(), h: (b.count / max * 100).toFixed(1) + '%', fill: b.out ? 'var(--color-warn)' : 'var(--color-info)', soft: b.out ? 'var(--color-warn-soft)' : 'var(--color-info-soft)' }));
+  }
+  buildCoverageBreach() {
+    const max = Math.max(...this.GH_COVERAGE.map(c => c.amber + c.red));
+    return this.GH_COVERAGE.map(c => ({ cov: c.cov, amber: c.amber, red: c.red, binds: c.binds.toLocaleString(), pct: (c.pct * 100).toFixed(1) + '%', pctColor: c.pct >= 0.15 ? 'var(--color-neg)' : (c.pct >= 0.09 ? 'var(--color-warn)' : 'var(--color-ink-soft)'), amberW: (c.amber / max * 100).toFixed(1) + '%', redW: (c.red / max * 100).toFixed(1) + '%' }));
+  }
+  buildBreachList() {
+    return this.GH_BREACH.map(r => {
+      const lo = r.gl != null ? r.gl : 0.8, hi = r.gh != null ? r.gh : 1.3;
+      const pos = Math.max(0, Math.min(1, (r.dev - lo) / (hi - lo)));
+      const inBand = r.gl != null && r.dev >= r.gl && r.dev <= r.gh;
+      return { entity: r.entity, coverage: r.coverage, period: r.period, broker: r.broker, dev: '×' + r.dev.toFixed(2), amber: r.amber, red: r.red, hasPlan: r.gl != null, band: r.gl != null ? r.gl.toFixed(2) + '–' + r.gh.toFixed(2) : 'no plan', dotL: (pos * 100).toFixed(1) + '%', dotColor: inBand ? 'var(--color-warn)' : 'var(--color-neg)' };
+    });
+  }
+  whatIfResult() {
+    const t = this.state.whatIf;
+    const rows = Math.round(129 * Math.pow(1.25 / t, 3.4));
+    return { threshold: '×' + t.toFixed(2), rows: rows.toLocaleString(), binds: Math.round(rows * 6.94).toLocaleString(), pct: ((t - 1.0) / 0.5 * 100).toFixed(0) };
+  }
+
+  MARKET = {
+    perception: 71, nps: 42, respHours: 5.8,
+    sentiment: [
+      { name: 'Granite Bay', score: 0.78, tone: 'pos' },
+      { name: 'Meridian', score: 0.61, tone: 'pos' },
+      { name: 'Aldgate', score: 0.55, tone: 'info' },
+      { name: 'Denholm', score: 0.49, tone: 'info' },
+      { name: 'Basel Re', score: 0.34, tone: 'warn' },
+      { name: 'Village & Ross', score: 0.22, tone: 'neg' },
+    ],
+    winThemes: ['Speed of quote', 'Capacity appetite', 'Claims handling', 'Technical pricing', 'Relationship depth'],
+    lossThemes: ['Price competitiveness', 'Coverage flexibility', 'Turnaround on cyber', 'Aggregate constraints'],
+    quadrant: [
+      { name: 'Granite Bay', x: 0.82, y: 0.74, tier: 'PLATINUM' },
+      { name: 'Meridian', x: 0.64, y: 0.58, tier: 'GOLD' },
+      { name: 'Aldgate', x: 0.71, y: 0.44, tier: 'PLATINUM' },
+      { name: 'Basel Re', x: 0.38, y: 0.52, tier: 'GOLD' },
+      { name: 'Village & Ross', x: 0.29, y: 0.26, tier: 'BRONZE' },
+    ],
+  };
+
+  WORKFLOW = {
+    cols: [
+      { key: 'open', label: 'Open', tone: 'var(--color-ink-mute)' },
+      { key: 'progress', label: 'In progress', tone: 'var(--color-info)' },
+      { key: 'review', label: 'Review', tone: 'var(--color-warn)' },
+      { key: 'done', label: 'Done', tone: 'var(--color-pos)' },
+    ],
+    tasks: [
+      { col: 'open', title: 'Review AMLIN / CYBER guardrail breaches', entity: 'AMLIN', who: 'RN', due: '11 Jul', pri: 'high' },
+      { col: 'open', title: 'Chase MSIJ / CASUALTY hit-ratio shortfall', entity: 'MSIJ', who: 'KT', due: '12 Jul', pri: 'high' },
+      { col: 'open', title: 'Q3 broker plan submissions — reminder', entity: 'MSRE', who: 'AO', due: '15 Jul', pri: 'med' },
+      { col: 'progress', title: 'Aggregate limit review — MSRE / MARINE', entity: 'MSRE', who: 'RN', due: '10 Jul', pri: 'high' },
+      { col: 'progress', title: 'Onboard Trant & Cole (009) — new broker', entity: 'MSEU', who: 'KT', due: '18 Jul', pri: 'med' },
+      { col: 'review', title: 'Pricing deviation memo — Energy book', entity: 'MSEU', who: 'AO', due: '09 Jul', pri: 'med' },
+      { col: 'review', title: 'Reinstate Basel Re (018) pricing band', entity: 'AMLIN', who: 'RN', due: '09 Jul', pri: 'low' },
+      { col: 'done', title: 'June actuals reconciled vs plan', entity: 'Group', who: 'AO', due: '05 Jul', pri: 'med' },
+      { col: 'done', title: 'Platinum broker QBR scheduled', entity: 'Group', who: 'KT', due: '03 Jul', pri: 'low' },
+    ],
+  };
+
+  buildWorkflow() {
+    const PRI = { high: ['var(--color-neg-soft)', 'var(--color-neg)'], med: ['var(--color-warn-soft)', 'var(--color-warn)'], low: ['var(--color-surface-sunken)', 'var(--color-ink-soft)'] };
+    return this.WORKFLOW.cols.map(c => ({
+      key: c.key, label: c.label, tone: c.tone,
+      count: this.WORKFLOW.tasks.filter(t => t.col === c.key).length,
+      tasks: this.WORKFLOW.tasks.filter(t => t.col === c.key).map(t => ({ ...t, priBg: PRI[t.pri][0], priFg: PRI[t.pri][1] })),
+    }));
+  }
+
+  ALERT_TYPE = {
+    guardrail_breach: { label: 'guardrail', bg: 'var(--color-warn-soft)', fg: 'var(--color-warn)' },
+    aggregate_limit_breach: { label: 'aggregate limit', bg: 'var(--color-aux-soft)', fg: 'var(--color-aux)' },
+    hit_ratio_below_plan: { label: 'hit vs plan', bg: 'var(--color-spot-soft)', fg: 'var(--color-spot-deep)' },
+  };
+  mapAlerts(list) {
+    return list.map(a => {
+      const t = this.ALERT_TYPE[a.type];
+      return { message: a.message, entity: a.entity, coverage: a.coverage, period: a.period, dot: a.sev === 'red' ? 'var(--color-neg)' : 'var(--color-warn)', typeLabel: t.label, typeBg: t.bg, typeFg: t.fg };
+    });
+  }
+  buildExpAlerts() { return this.mapAlerts(this.EXP_ALERTS); }
+
+  buildSentiment() {
+    const map = { pos: 'var(--color-pos)', info: 'var(--color-info)', warn: 'var(--color-warn)', neg: 'var(--color-neg)' };
+    return this.MARKET.sentiment.map(s => ({ name: s.name, score: (s.score * 100).toFixed(0), w: (s.score * 100).toFixed(0) + '%', color: map[s.tone] }));
+  }
+  buildQuadrant() {
+    const L = 44, Rr = 244, T = 16, Bp = 196;
+    return this.MARKET.quadrant.map(p => {
+      const ts = this.TIER_STYLE[p.tier];
+      return { name: p.name, cx: +(L + p.x * (Rr - L)).toFixed(1), cy: +(Bp - p.y * (Bp - T)).toFixed(1), fill: ts.fg };
+    });
+  }
+
+  renderVals() {
+    const tab = this.state.activeTab || this.props.startTab || 'executive';
+    const theme = this.state.theme != null ? this.state.theme : (this.props.theme || 'light');
+    const tabs = this.TAB_DEFS.map(t => {
+      const active = t.id === tab;
+      return {
+        label: t.label, icon: t.icon,
+        onSelect: () => this.setState({ activeTab: t.id }),
+        style: {
+          display: 'flex', alignItems: 'center', gap: 8, height: '100%', padding: '0 2px',
+          cursor: 'pointer', fontSize: 14, fontWeight: 600, whiteSpace: 'nowrap',
+          color: active ? 'var(--color-ink)' : 'var(--color-ink-soft)',
+          borderBottom: active ? '3px solid var(--color-spot)' : '3px solid transparent',
+          transition: 'color .18s ease',
+        },
+      };
+    });
+    return {
+      rootClass: theme === 'dark' ? 'dark' : '',
+      themeIcon: theme === 'dark' ? 'Sun' : 'Moon',
+      toggleTheme: this.toggleTheme,
+      stop: (e) => e.stopPropagation(),
+      tabs,
+      filters: this.FILTERS,
+      isExec: tab === 'executive',
+      isBrokers: tab === 'brokers',
+      isExposure: tab === 'exposure',
+      isGuardrails: tab === 'guardrails',
+      isMarket: tab === 'market',
+      isWorkflow: tab === 'workflow',
+      kpis: this.buildKpis(),
+      chart: this.buildChart(),
+      planRows: this.buildPlanRows(),
+      topBrokers: this.buildTopBrokers(),
+      alerts: this.buildAlerts(),
+      brokers: this.buildBrokers(),
+      profile: this.buildProfile(),
+      expRegion: this.buildExpBars(this.EXP_REGION),
+      expCoverage: this.buildExpBars(this.EXP_COVERAGE),
+      topClients: this.buildTopClients(),
+      lorenz: this.buildLorenz(),
+      expAlerts: this.buildExpAlerts(),
+      histogram: this.buildHistogram(),
+      covBreach: this.buildCoverageBreach(),
+      breachList: this.buildBreachList(),
+      whatIf: this.whatIfResult(),
+      whatIfVal: this.state.whatIf,
+      setWhatIf: (e) => this.setState({ whatIf: parseFloat(e.target.value) }),
+      market: this.MARKET,
+      marketSentiment: this.buildSentiment(),
+      marketQuadrant: this.buildQuadrant(),
+      workflow: this.buildWorkflow(),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -15,7 +15,7 @@ Apps) is a configuration change, not a rewrite (SPEC §10).
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 
-uvicorn app.main:app          # http://127.0.0.1:8000/docs for Swagger
+uvicorn app.main:app          # dashboard at http://127.0.0.1:8000, Swagger at /docs
 python scripts/seed.py        # loads 80 brokers × 12 months through the API
 pytest                        # 58 tests; KPI math is 100% covered
 ```
@@ -106,6 +106,16 @@ at higher hit ratios and guardrail breaches concentrate in Cyber/Energy
 every seed run re-proves the ingestion path. `POST /api/v1/admin/reset`
 truncates; `?reseed=true` reloads the same set through the same code path.
 
+## Dashboard frontend
+
+`frontend/` is the six-tab ORION dashboard, recreated from the Claude Design
+handoff (`docs/design-handoff/`) and wired to the live read model. It is a
+zero-build static app (ES modules + hand-built SVG charts on the Generate
+design-token contract) served by FastAPI at `/`. All charts, KPIs, filters,
+the broker profile modal, and the guardrails what-if slider run against
+`/api/v1/*`; Market Perception and Operational Workflow are labelled
+illustrative/demo-local per the honesty map. Light and dark themes.
+
 ## Layout
 
 ```
@@ -123,6 +133,10 @@ app/
     └── demo_data.py   # deterministic synthetic generator (SPEC §6)
 scripts/seed.py        # loads demo data via the API
 tests/                 # ingest, aggregation, dashboard suites
+frontend/              # six-tab dashboard (static, served at /)
+├── tokens/            # Generate design-system token CSS (from the handoff)
+├── css/app.css        # component layer transcribed from the design prototype
+└── js/                # app shell, API client, formatters, SVG chart builders
 ```
 
 ## Integration notes

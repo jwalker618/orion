@@ -1,0 +1,49 @@
+/* ============================================================================
+ * Generate — DARK THEME  (DSI dark overrides)
+ *
+ * Dark mode keeps every variable NAME; only values change. Activated by a
+ * `.dark` class on a root ancestor. The chrome (sidebar) stays navy in both
+ * themes — it is structure, not content. Mirrors packages/tokens/dsi-theme.css.
+ * ========================================================================= */
+
+.dark {
+  /* ─── Surface ─── deep ocean navy */
+  --color-canvas:         #07182a;
+  --color-surface:        #14304b;
+  --color-surface-sunken: #0e2640;
+  --color-surface-elev:   #1a3d5f;
+
+  /* ─── Ink ─── warm cream on navy */
+  --color-ink:      #f1ece0;
+  --color-ink-soft: #cdd8e5;
+  --color-ink-mute: #98a6b8;
+
+  /* ─── Rules ─── */
+  --color-rule:        #2b4f75;
+  --color-rule-strong: #3e6794;
+
+  --color-accent: #f1ece0;
+
+  /* ─── Info ─── brighter teal for contrast on navy */
+  --color-info:      #39d3ba;
+  --color-info-soft: #173e48;
+  --color-info-deep: #b8f2e5;
+
+  /* ─── Spot ─── */
+  --color-spot:      #f0926e;
+  --color-spot-soft: #4a2519;
+  --color-spot-deep: #fbd0ba;
+
+  /* ─── Pos / Neg / Warn / Aux ─── */
+  --color-pos:       #6eee7a;
+  --color-pos-soft:  #173821;
+  --color-neg:       #ff8585;
+  --color-neg-soft:  #3f1b1b;
+  --color-warn:      #f8bd5e;
+  --color-warn-soft: #3b2911;
+  --color-aux:       #9ab1f2;
+  --color-aux-soft:  #1c2a4f;
+
+  --color-chrome:      #0b2237;
+  --color-chrome-deep: #051322;
+}
