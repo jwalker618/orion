@@ -32,34 +32,35 @@ def health(db: Session = Depends(get_db)) -> dict:
     }
 
 
+def load_demo_data(db: Session) -> dict:
+    """Load the synthetic demo set through the same ingestion code path as
+    the public POSTs, so validation and upserts stay exercised. Shared by
+    POST /admin/reset?reseed=true and boot-time seeding (ORION_SEED_ON_START).
+    """
+    dataset = generate_dataset()
+    accepted = {"plans": 0, "submissions": 0}
+    rejected = {"plans": 0, "submissions": 0}
+    for chunk in batched(dataset["plans"], 500):
+        report = post_entity_plans(RawPlanBatch(records=chunk), db)
+        accepted["plans"] += report.accepted + report.updated
+        rejected["plans"] += len(report.rejected)
+    for chunk in batched(dataset["submissions"], 1000):
+        report = post_broker_submissions(RawSubmissionBatch(records=chunk), db)
+        accepted["submissions"] += report.accepted + report.updated
+        rejected["submissions"] += len(report.rejected)
+    return {"accepted": accepted, "rejected": rejected}
+
+
 @router.post("/admin/reset", dependencies=[AuthDep])
 def reset(
     reseed: bool = Query(default=False, description="Reload the synthetic demo set"),
     db: Session = Depends(get_db),
 ) -> dict:
-    """Truncate all fact data (and the broker registry), optionally reseed.
-
-    Reseeding routes the generated batches through the same ingestion code
-    path as the public POSTs, so validation and upserts stay exercised.
-    """
+    """Truncate all fact data (and the broker registry), optionally reseed."""
     db.execute(delete(BrokerSubmission))
     db.execute(delete(EntityPlan))
     db.execute(delete(Broker))
     db.commit()
 
-    reports = {"plans": None, "submissions": None}
-    if reseed:
-        dataset = generate_dataset()
-        accepted = {"plans": 0, "submissions": 0}
-        rejected = {"plans": 0, "submissions": 0}
-        for chunk in batched(dataset["plans"], 500):
-            report = post_entity_plans(RawPlanBatch(records=chunk), db)
-            accepted["plans"] += report.accepted + report.updated
-            rejected["plans"] += len(report.rejected)
-        for chunk in batched(dataset["submissions"], 1000):
-            report = post_broker_submissions(RawSubmissionBatch(records=chunk), db)
-            accepted["submissions"] += report.accepted + report.updated
-            rejected["submissions"] += len(report.rejected)
-        reports = {"accepted": accepted, "rejected": rejected}
-
+    reports = load_demo_data(db) if reseed else {"plans": None, "submissions": None}
     return {"status": "reset", "reseeded": reseed, "report": reports}

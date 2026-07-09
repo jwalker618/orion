@@ -838,6 +838,19 @@ document.getElementById('btn-theme').addEventListener('click', () => {
 
 // ─── boot ───────────────────────────────────────────────────────────────────
 
+// One-time deploy conveniences: ?key=... stores the API key, ?api=... the API
+// base (for split deployments without a proxy rewrite); both strip from the URL.
+{
+  const qs = new URLSearchParams(window.location.search);
+  if (qs.has('key')) localStorage.setItem('orion-api-key', qs.get('key'));
+  if (qs.has('api')) localStorage.setItem('orion-api-base', qs.get('api'));
+  if (qs.has('key') || qs.has('api')) {
+    qs.delete('key'); qs.delete('api');
+    const rest = qs.toString();
+    history.replaceState(null, '', window.location.pathname + (rest ? '?' + rest : ''));
+  }
+}
+
 document.getElementById('btn-search').innerHTML = icon('Search', 17);
 applyTheme();
 loadTab();

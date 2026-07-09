@@ -34,10 +34,29 @@ def seed_reference_data() -> None:
         db.commit()
 
 
+def seed_demo_data_if_empty() -> None:
+    """ORION_SEED_ON_START=true: load the demo set when no submissions exist.
+
+    Makes ephemeral-filesystem deploys (e.g. Railway without a volume) come up
+    demo-ready on every boot without a separate seed step.
+    """
+    from sqlalchemy import func
+
+    from app.models import BrokerSubmission
+    from app.routers.admin import load_demo_data
+
+    with SessionLocal() as db:
+        count = db.scalar(select(func.count()).select_from(BrokerSubmission)) or 0
+        if count == 0:
+            load_demo_data(db)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
     seed_reference_data()
+    if get_settings().seed_on_start:
+        seed_demo_data_if_empty()
     yield
 
 
@@ -50,7 +69,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[get_settings().cors_origins],
+    allow_origins=get_settings().cors_origin_list,
     allow_methods=["*"],
     allow_headers=["*"],
 )

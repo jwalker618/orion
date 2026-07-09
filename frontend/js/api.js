@@ -2,14 +2,19 @@
 // {type, title, detail, errors[]} and are surfaced as thrown objects the
 // UI renders verbatim (API-SPEC §5).
 
-const API_BASE = '/api/v1';
+// Same-origin by default (FastAPI serves the frontend, or a Vercel rewrite
+// proxies /api/* to the backend). For a split deployment without rewrites,
+// set localStorage 'orion-api-base' to e.g. "https://<railway-app>/api/v1".
+function apiBase() {
+  return localStorage.getItem('orion-api-base') || '/api/v1';
+}
 
 export function apiKey() {
   return localStorage.getItem('orion-api-key') || 'demo-key';
 }
 
 export async function get(path, params = {}) {
-  const url = new URL(API_BASE + path, window.location.origin);
+  const url = new URL(apiBase() + path, window.location.origin);
   for (const [k, v] of Object.entries(params)) {
     if (v !== null && v !== undefined && v !== '') url.searchParams.set(k, v);
   }

@@ -139,6 +139,13 @@ frontend/              # six-tab dashboard (static, served at /)
 └── js/                # app shell, API client, formatters, SVG chart builders
 ```
 
+## Deployment
+
+See [DEPLOY.md](DEPLOY.md) — Railway runs the container (Dockerfile +
+`railway.json`, healthchecked at `/api/v1/health`, optional `/data` volume or
+`ORION_SEED_ON_START=true` for ephemeral demo mode); Vercel optionally fronts
+`frontend/` with a same-origin `/api/*` rewrite (`frontend/vercel.json`).
+
 ## Integration notes
 
 - [docs/design-handover.md](docs/design-handover.md) — UX handover for Claude
