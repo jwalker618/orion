@@ -127,6 +127,9 @@ tests/                 # ingest, aggregation, dashboard suites
 
 ## Integration notes
 
+- [docs/design-handover.md](docs/design-handover.md) — UX handover for Claude
+  Design: screen-by-screen contracts with real sample payloads, formatting
+  conventions, shared component vocabulary, and states to design.
 - [docs/integration-clearinghouse.md](docs/integration-clearinghouse.md) —
   how Clearinghouse Intelligence (multi-tenant submission intake) could feed
   this API's ingestion endpoints and share broker identity.
