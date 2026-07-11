@@ -3,6 +3,8 @@
 
 import { icon } from './icons.js';
 import { get } from './api.js';
+import { auth } from './auth.js';
+import { renderLogin, renderSessionPill, updateSessionPill } from './authui.js';
 import {
   DASH, money, pct, signPct, signPts, deviation, periodShort, periodLong,
   asOf, coverageName, esc,
@@ -81,8 +83,15 @@ function periodRangeLabel() {
 
 // ─── chrome ─────────────────────────────────────────────────────────────────
 
+function visibleTabs() {
+  // Review-access users get the non-API surfaces fenced (generate-web's
+  // "review lens" behaviour: the server disguises, the FE hides the nav).
+  if (auth.user?.review) return TABS.filter(t => !['market', 'workflow'].includes(t.id));
+  return TABS;
+}
+
 function renderTabs() {
-  document.getElementById('tabbar').innerHTML = TABS.map(t => `
+  document.getElementById('tabbar').innerHTML = visibleTabs().map(t => `
     <button class="tab ${t.id === state.tab ? 'active' : ''}" role="tab" data-action="tab" data-tab="${t.id}">
       ${icon(t.icon, 16)}<span>${t.label}</span>
     </button>`).join('');
@@ -99,11 +108,25 @@ function selectCtrl(name, label, value, options) {
   </label>`;
 }
 
+function entityCtrl() {
+  const scope = auth.user?.entity_scope;
+  if (scope) {
+    // Underwriters are scoped to their entity — preset and locked (the
+    // SessionGuard role-routing analogue for a filter-driven app).
+    return `<span class="ctrl" style="cursor:default" title="Scoped to your entity">
+      <span class="ctrl-label">Entity</span>
+      <span class="ctrl-value">${scope} · ${ENTITIES[scope] || ''}</span>
+    </span>`;
+  }
+  const all = [{ value: '', label: 'All' }];
+  return selectCtrl('entity', 'Entity', state.entity,
+    all.concat(Object.entries(ENTITIES).map(([code, region]) => ({ value: code, label: `${code} · ${region}` }))));
+}
+
 function renderFilterBar() {
   const all = [{ value: '', label: 'All' }];
   document.getElementById('filter-controls').innerHTML = [
-    selectCtrl('entity', 'Entity', state.entity,
-      all.concat(Object.entries(ENTITIES).map(([code, region]) => ({ value: code, label: `${code} · ${region}` })))),
+    entityCtrl(),
     selectCtrl('coverage', 'Coverage', state.coverage,
       all.concat(COVERAGES.map(c => ({ value: c, label: c })))),
     selectCtrl('region', 'Region', state.region,
@@ -129,7 +152,8 @@ function renderChips() {
   const chips = [];
   const add = (filterName, label) => chips.push(
     `<span class="filter-chip">${esc(label)}<button data-action="clear-filter" data-filter="${filterName}" aria-label="Clear ${filterName}">${icon('X', 12)}</button></span>`);
-  if (state.entity) add('entity', `${state.entity} · ${ENTITIES[state.entity]}`);
+  // A scoped entity is shown by the locked control, not as a removable chip.
+  if (state.entity && !auth.user?.entity_scope) add('entity', `${state.entity} · ${ENTITIES[state.entity]}`);
   if (state.coverage) add('coverage', state.coverage);
   if (state.region) add('region', state.region);
   if (state.tier) add('tier', state.tier);
@@ -791,7 +815,10 @@ document.addEventListener('click', (e) => {
     state.page = 0;
     loadTab();
   } else if (action === 'reset') {
-    Object.assign(state, { entity: '', coverage: '', region: '', tier: '', months: 12, page: 0 });
+    Object.assign(state, {
+      entity: auth.user?.entity_scope || '',
+      coverage: '', region: '', tier: '', months: 12, page: 0,
+    });
     loadTab();
   } else if (action === 'clear-filter') {
     const f = el.dataset.filter;
@@ -809,7 +836,7 @@ document.addEventListener('click', (e) => {
   } else if (action === 'alert') {
     // Guardrail alerts deep-link to the Guardrails tab with filters applied.
     if (el.dataset.type === 'guardrail_breach') {
-      state.entity = el.dataset.entity || '';
+      state.entity = auth.user?.entity_scope || el.dataset.entity || '';
       state.coverage = el.dataset.coverage || '';
       state.tab = 'guardrails';
       loadTab();
@@ -853,4 +880,33 @@ document.getElementById('btn-theme').addEventListener('click', () => {
 
 document.getElementById('btn-search').innerHTML = icon('Search', 17);
 applyTheme();
-loadTab();
+
+// Session-guarded boot: refresh a persisted session or show the login screen.
+let stopGuard = null;
+
+function applyRolePresets() {
+  const scope = auth.user?.entity_scope;
+  if (scope) state.entity = scope;
+  if (auth.user?.review && ['market', 'workflow'].includes(state.tab)) state.tab = 'executive';
+}
+
+function startApp() {
+  document.getElementById('auth-root').innerHTML = '';
+  applyRolePresets();
+  renderSessionPill(document.getElementById('session-slot'), { onLogout: showLogin });
+  stopGuard = auth.startGuard({ onTick: updateSessionPill, onExpire: showLogin });
+  loadTab();
+}
+
+function showLogin() {
+  if (stopGuard) { stopGuard(); stopGuard = null; }
+  document.getElementById('session-slot').innerHTML = '';
+  $modal.innerHTML = '';
+  $main.innerHTML = '';
+  document.getElementById('filter-controls').innerHTML = '';
+  document.getElementById('filter-chips').innerHTML = '';
+  document.getElementById('tabbar').innerHTML = '';
+  renderLogin(document.getElementById('auth-root'), { onSuccess: startApp });
+}
+
+auth.boot().then((ok) => (ok ? startApp() : showLogin()));

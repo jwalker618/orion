@@ -15,9 +15,42 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.config import get_settings
 from app.database import SessionLocal, init_db
-from app.models import Coverage, Entity
-from app.routers import admin, dashboard, ingest
+from app.models import Coverage, Entity, User
+from app.routers import admin, auth, dashboard, ingest
+from app.services import security
 from app.services.demo_data import COVERAGES, ENTITIES
+
+# Demo identities — one per role (initials match the dashboard fixtures).
+# Every account starts with ORION_DEMO_PASSWORD (default "orion-demo").
+DEMO_USERS = [
+    {
+        "user_id": "usr-ki", "email": "kenji.ito@msad.example",
+        "display_name": "Kenji Ito", "job_title": "Group Distribution Lead",
+        "organisation": "MS&AD Group", "role": "group_admin",
+    },
+    {
+        "user_id": "usr-ao", "email": "amara.osei@msad.example",
+        "display_name": "Amara Osei", "job_title": "Broker Relations Manager",
+        "organisation": "MS&AD Group", "role": "broker_relations",
+    },
+    {
+        "user_id": "usr-rn", "email": "rin.nakamura@msad.example",
+        "display_name": "Rin Nakamura", "job_title": "Senior Underwriter",
+        "organisation": "MS Reinsurance", "role": "entity_underwriter",
+        "entity_scope": "MSRE",
+    },
+    {
+        "user_id": "usr-kt", "email": "keiko.tanaka@msad.example",
+        "display_name": "Keiko Tanaka", "job_title": "Underwriting Manager",
+        "organisation": "MS Amlin", "role": "entity_underwriter",
+        "entity_scope": "AMLIN",
+    },
+    {
+        "user_id": "usr-cr", "email": "casey.reid@partner.example",
+        "display_name": "Casey Reid", "job_title": "External Reviewer",
+        "organisation": "Group Audit Partner", "role": "reviewer",
+    },
+]
 
 
 def seed_reference_data() -> None:
@@ -31,6 +64,25 @@ def seed_reference_data() -> None:
         for c in COVERAGES:
             if c["code"] not in known_coverages:
                 db.add(Coverage(**c))
+        db.commit()
+
+
+def seed_demo_users() -> None:
+    """Create any missing demo accounts (never overwrites changed passwords)."""
+    from datetime import datetime, timezone
+
+    settings = get_settings()
+    with SessionLocal() as db:
+        known = set(db.scalars(select(User.email)))
+        for spec in DEMO_USERS:
+            if spec["email"] not in known:
+                db.add(
+                    User(
+                        **spec,
+                        password_hash=security.hash_password(settings.demo_password),
+                        joined_at=datetime.now(timezone.utc).replace(tzinfo=None),
+                    )
+                )
         db.commit()
 
 
@@ -55,6 +107,7 @@ def seed_demo_data_if_empty() -> None:
 async def lifespan(app: FastAPI):
     init_db()
     seed_reference_data()
+    seed_demo_users()
     if get_settings().seed_on_start:
         seed_demo_data_if_empty()
     yield
@@ -109,6 +162,7 @@ async def validation_exception_handler(
 
 
 API_PREFIX = "/api/v1"
+app.include_router(auth.router, prefix=API_PREFIX)
 app.include_router(ingest.router, prefix=API_PREFIX)
 app.include_router(dashboard.router, prefix=API_PREFIX)
 app.include_router(admin.router, prefix=API_PREFIX)

@@ -24,6 +24,18 @@ class Settings(BaseSettings):
     # keeps ephemeral-filesystem deploys (Railway without a volume) demo-ready.
     seed_on_start: bool = False
 
+    # --- interactive auth (generate-web contract) ---
+    # HMAC secret for access tokens. Override in any real deployment; the
+    # default only exists so the demo boots with zero config.
+    auth_secret: str = "orion-demo-auth-secret"
+    # Password every seeded demo user starts with.
+    demo_password: str = "orion-demo"
+    access_token_ttl_seconds: int = 15 * 60
+    # Sliding refresh window — mirrors the 45-minute idle limit the frontend
+    # session guard enforces; each rotation extends it.
+    refresh_token_ttl_seconds: int = 45 * 60
+    password_reset_ttl_seconds: int = 30 * 60
+
     @property
     def api_key_set(self) -> frozenset[str]:
         return frozenset(k.strip() for k in self.api_keys.split(",") if k.strip())

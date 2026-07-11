@@ -1,22 +1,82 @@
-"""Shared FastAPI dependencies: API-key auth and the common list filters."""
+"""Shared FastAPI dependencies: auth (API key or bearer) and list filters.
+
+Two caller kinds, mirroring the generate-web split:
+- Machines (reporting-entity feeds, the seed script, curl) present X-API-Key
+  and implicitly hold every permission.
+- People present a Bearer access token issued by /api/v1/auth/login; their
+  permissions derive from their role (app.models.user.ROLE_PERMISSIONS).
+"""
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 
-from fastapi import Depends, HTTPException, Query, Security
+from fastapi import Depends, Header, HTTPException, Query, Security
 from fastapi.security import APIKeyHeader
+from sqlalchemy.orm import Session
 
 from app.config import get_settings
+from app.database import get_db
 from app.schemas.common import PERIOD_RE
+from app.services import security
 
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 
-def require_api_key(api_key: str | None = Security(api_key_header)) -> str:
-    if api_key is None or api_key not in get_settings().api_key_set:
-        raise HTTPException(status_code=401, detail="Invalid or missing X-API-Key")
-    return api_key
+@dataclass
+class AuthContext:
+    kind: str                      # "machine" | "user"
+    user_id: str | None = None
+    role: str | None = None
+    permissions: list[str] = field(default_factory=list)
+
+    def has(self, permission: str) -> bool:
+        return self.kind == "machine" or permission in self.permissions
+
+
+def authenticate(
+    api_key: str | None = Security(api_key_header),
+    authorization: str | None = Header(default=None),
+    db: Session = Depends(get_db),
+) -> AuthContext:
+    if api_key is not None and api_key in get_settings().api_key_set:
+        return AuthContext(kind="machine")
+
+    if authorization and authorization.lower().startswith("bearer "):
+        from app.models.user import User, permissions_for_role
+
+        token = authorization[7:].strip()
+        user_id = security.verify_access_token(get_settings().auth_secret, token)
+        if user_id:
+            user = db.get(User, user_id)
+            if user and user.is_active:
+                return AuthContext(
+                    kind="user",
+                    user_id=user.user_id,
+                    role=user.role,
+                    permissions=permissions_for_role(user.role),
+                )
+        raise HTTPException(status_code=401, detail="Invalid or expired access token")
+
+    raise HTTPException(
+        status_code=401, detail="Provide X-API-Key or a Bearer access token"
+    )
+
+
+def require_permission(permission: str):
+    def checker(ctx: AuthContext = Depends(authenticate)) -> AuthContext:
+        if not ctx.has(permission):
+            raise HTTPException(
+                status_code=403, detail=f"Requires the '{permission}' permission"
+            )
+        return ctx
+
+    return checker
+
+
+# Back-compat name: any authenticated caller (machine or user).
+def require_api_key(ctx: AuthContext = Depends(authenticate)) -> AuthContext:
+    return ctx
 
 
 def _check_period(value: str | None, name: str) -> str | None:

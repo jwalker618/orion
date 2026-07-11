@@ -36,7 +36,9 @@ service.
 
 | Variable | Value | Why |
 |---|---|---|
-| `ORION_API_KEYS` | your secret key(s) | Replaces `demo-key`. Every API call (and the dashboard) authenticates with this. |
+| `ORION_API_KEYS` | your secret key(s) | Replaces `demo-key` for **machine** callers (entity feeds, seed script, curl). |
+| `ORION_AUTH_SECRET` | `openssl rand -hex 32` | Signs user access tokens. Override for anything public; restarts with a changed secret sign everyone out (by design). |
+| `ORION_DEMO_PASSWORD` | your choice | Password for the seeded demo identities (see README §Logins). Default `orion-demo`. |
 | `ORION_SEED_ON_START` | `true` | Loads the deterministic demo set (seed 42) at boot whenever the DB is empty — an ephemeral-filesystem deploy is demo-ready on every restart. Skip it if you attach a volume and want to manage data yourself. |
 | `ORION_DATABASE_URL` | `sqlite:////data/orion.db` | **Only with a volume** (step 3). Omit for ephemeral + seed-on-start. |
 | `ORION_CORS_ORIGINS` | `https://your-app.vercel.app` | **Only for topology B without the rewrite** (frontend calling Railway cross-origin). With the Vercel rewrite (recommended) or topology A, leave the default `*` or tighten it — same-origin requests don't need CORS. |
@@ -62,8 +64,10 @@ are already portable.
   `https://<railway-domain>/api/v1/health` returns
   `{"status":"ok","db":"ok","records":{…}}` — with seed-on-start the record
   counts land at 480 plans / ~2,850 submissions.
-- Open `https://<railway-domain>/?key=<your-api-key>` — the dashboard stores
-  the key (localStorage) and strips it from the URL. Swagger is at `/docs`.
+- Open `https://<railway-domain>/` — you land on the ORION **login screen**;
+  sign in with a demo identity (README §Logins) and `ORION_DEMO_PASSWORD`.
+  Swagger is at `/docs`. (`?key=` is still accepted for direct API testing;
+  the dashboard itself authenticates users with bearer tokens.)
 
 **Topology A stops here.**
 
@@ -79,7 +83,7 @@ The frontend is a zero-build static app, so the Vercel project is trivial:
    - **Root Directory** → `frontend`
    - **Framework Preset** → `Other`; leave Build Command and Output Directory
      **empty** (static files, nothing to build)
-3. Deploy, then open `https://<vercel-domain>/?key=<your-api-key>`.
+3. Deploy, then open `https://<vercel-domain>/` and sign in.
 
 CLI equivalent: `cd frontend && vercel --prod` (answers: no build, root is the
 directory itself).
@@ -127,7 +131,8 @@ modal.
 | Symptom | Cause / fix |
 |---|---|
 | Healthcheck never green | Config file path not set to `railway.json`, or Root Directory not empty — the image must build from repo root. |
-| Dashboard loads, every panel shows a 401 | Key not stored: reopen with `?key=<your ORION_API_KEYS value>`. |
+| Dashboard bounces to the login screen after a deploy | `ORION_AUTH_SECRET` changed (or defaulted) — sessions are signed with it; sign in again. |
+| Password reset asks for a token | Demo has no mailer — the token is printed in the Railway deploy log (`[orion-auth] password reset for …`). |
 | Panels show "Network error" on Vercel | `vercel.json` rewrite destination still the placeholder, or the fallback mode is missing `ORION_CORS_ORIGINS` on Railway. |
 | Data vanished after a deploy | Ephemeral filesystem without `ORION_SEED_ON_START=true` — set it, or attach a volume (step 3). |
 | Fonts look like system-ui | IBM Plex loads from Google Fonts; blocked networks fall back gracefully. Self-host the fonts in `frontend/tokens/fonts.css` if needed. |

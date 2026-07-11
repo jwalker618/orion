@@ -17,14 +17,16 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.deps import AuthDep, FiltersDep, ListFilters
+from app.deps import FiltersDep, ListFilters, require_permission
 from app.models import Broker, BrokerSubmission, Entity, EntityPlan
 from app.schemas import dashboard as ds
 from app.schemas.plans import EntityPlanOut
 from app.schemas.submissions import BrokerSubmissionOut
 from app.services import aggregation as agg
 
-router = APIRouter(tags=["dashboard"], dependencies=[AuthDep])
+router = APIRouter(
+    tags=["dashboard"], dependencies=[Depends(require_permission("dashboard:read"))]
+)
 
 ZERO = Decimal("0")
 

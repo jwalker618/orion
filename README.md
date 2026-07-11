@@ -22,10 +22,34 @@ pytest                        # 58 tests; KPI math is 100% covered
 
 Configuration via environment (or `.env`): `ORION_DATABASE_URL`
 (default `sqlite:///./demo.db`), `ORION_API_KEYS` (comma-separated,
-default `demo-key`), `ORION_CORS_ORIGINS` (default `*`).
+default `demo-key`), `ORION_CORS_ORIGINS` (default `*`),
+`ORION_AUTH_SECRET` / `ORION_DEMO_PASSWORD` (interactive auth, below).
 
-All routes are prefixed `/api/v1` and, except `GET /health`, require the
-`X-API-Key` header.
+All routes are prefixed `/api/v1`. Except `GET /health` and `/auth/*`,
+every call authenticates as either a **machine** (`X-API-Key` header — full
+access; used by reporting-entity feeds and the seed script) or a **person**
+(`Bearer` access token from `/auth/login` — permissions derive from role).
+
+## Logins (generate-web auth contract)
+
+The dashboard is login-gated, wire-compatible with the shared
+`@generate-web/auth` package: short-lived HMAC-signed access tokens (15 min,
+refreshed just-in-time), opaque **rotating refresh tokens** (reuse burns the
+token family), `/auth/me` profiles with role-derived permissions, **TOTP MFA**
+with single-use backup codes, password reset (token logged server-side — no
+mailer in the demo), SSO endpoint stubs (501 until an IdP is wired), and a
+45-minute idle session guard with a countdown pill, reset only by discrete
+interactions. Auth endpoints live under `/api/v1/auth/*` (see `/docs`).
+
+Demo identities (password: `ORION_DEMO_PASSWORD`, default `orion-demo`):
+
+| Email | Role | Behaviour |
+|---|---|---|
+| `kenji.ito@msad.example` | `group_admin` | everything incl. `admin:reset` |
+| `amara.osei@msad.example` | `broker_relations` | dashboards + ingestion |
+| `rin.nakamura@msad.example` | `entity_underwriter` | dashboards, **locked to MSRE** |
+| `keiko.tanaka@msad.example` | `entity_underwriter` | dashboards, **locked to AMLIN** |
+| `casey.reid@partner.example` | `reviewer` | dashboards only; illustrative tabs fenced |
 
 ## Ingestion (curl examples)
 

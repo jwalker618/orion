@@ -7,7 +7,7 @@ from sqlalchemy import delete, func, select, text
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.deps import AuthDep
+from app.deps import require_permission
 from app.models import Broker, BrokerSubmission, EntityPlan
 from app.routers.ingest import RawPlanBatch, RawSubmissionBatch, post_broker_submissions, post_entity_plans
 from app.services.demo_data import batched, generate_dataset
@@ -51,7 +51,7 @@ def load_demo_data(db: Session) -> dict:
     return {"accepted": accepted, "rejected": rejected}
 
 
-@router.post("/admin/reset", dependencies=[AuthDep])
+@router.post("/admin/reset", dependencies=[Depends(require_permission("admin:reset"))])
 def reset(
     reseed: bool = Query(default=False, description="Reload the synthetic demo set"),
     db: Session = Depends(get_db),
