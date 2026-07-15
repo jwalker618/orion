@@ -41,15 +41,26 @@ mailer in the demo), SSO endpoint stubs (501 until an IdP is wired), and a
 45-minute idle session guard with a countdown pill, reset only by discrete
 interactions. Auth endpoints live under `/api/v1/auth/*` (see `/docs`).
 
-Demo identities (password: `ORION_DEMO_PASSWORD`, default `orion-demo`):
+Accounts (initial password: `ORION_DEMO_PASSWORD`, default `orion-demo`;
+change via the Forgot-password flow):
 
 | Email | Role | Behaviour |
 |---|---|---|
-| `kenji.ito@msad.example` | `group_admin` | everything incl. `admin:reset` |
-| `amara.osei@msad.example` | `broker_relations` | dashboards + ingestion |
-| `rin.nakamura@msad.example` | `entity_underwriter` | dashboards, **locked to MSRE** |
-| `keiko.tanaka@msad.example` | `entity_underwriter` | dashboards, **locked to AMLIN** |
-| `casey.reid@partner.example` | `reviewer` | dashboards only; illustrative tabs fenced |
+| `john.walker@msamlin.com` | `group_admin` | everything incl. `admin:reset` |
+| `takeshi.doi@msigcs.co.uk` | `broker_relations` | dashboards + ingestion |
+| `eric_schaap@msig-asia.com` | `broker_relations` | dashboards + ingestion |
+| `demo.user@msinternational.com` | `broker_relations` | generic demo login |
+
+Other roles remain available in the model (`entity_underwriter` with a locked
+entity scope; `reviewer` with the illustrative tabs fenced) — assign them by
+setting `role` / `entity_scope` on a user row.
+
+**Login notifications:** set `ORION_LOGIN_NOTIFY_WEBHOOK_URL` (or the bare
+`LOGIN_NOTIFY_WEBHOOK_URL`, as in the DSI Vercel project) to a Slack incoming
+webhook and every fresh sign-in posts a one-liner (`🔓 ORION login — who ·
+role · org · ip · ua`). Server-only and best-effort: unset means off, and a
+Slack outage never affects the login. For MFA users the event fires when the
+challenge passes, not at password entry.
 
 ## Ingestion (curl examples)
 

@@ -38,7 +38,7 @@ export function renderLogin(root, { onSuccess }) {
             </div>
           </div>
           ${inner}
-          <div class="auth-foot">Demo identities — see the README. Sessions idle out after 45 minutes.</div>
+          <div class="auth-foot">Demo access: <span class="mono">demo.user@msinternational.com</span> — see the README. Sessions idle out after 45 minutes.</div>
         </div>
       </div>`;
   }
