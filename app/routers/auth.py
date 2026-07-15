@@ -23,7 +23,9 @@ import json
 import secrets
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Response
+from fastapi import (
+    APIRouter, BackgroundTasks, Depends, Header, HTTPException, Request, Response,
+)
 from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
@@ -32,6 +34,7 @@ from app.database import get_db
 from app.models.user import RefreshToken, PasswordResetToken, User, permissions_for_role
 from app.schemas import auth as s
 from app.services import security
+from app.services.notify import send_login_notification
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -89,16 +92,23 @@ def _bearer_user_mfa_passed(user: User = Depends(_bearer_user)) -> User:
 
 
 @router.post("/login", response_model=s.LoginResponse)
-def login(body: s.LoginRequest, db: Session = Depends(get_db)) -> s.LoginResponse:
+def login(
+    body: s.LoginRequest,
+    request: Request,
+    background: BackgroundTasks,
+    db: Session = Depends(get_db),
+) -> s.LoginResponse:
     user = db.scalar(select(User).where(User.email == body.email.lower()))
     if not user or not user.is_active or not security.verify_password(
         body.password, user.password_hash
     ):
         raise HTTPException(status_code=401, detail="Invalid email or password")
     if user.mfa_enabled:
+        # The fresh-login notification waits for the MFA challenge to pass.
         _pending_mfa.add(user.user_id)
     else:
         user.last_login = _now()
+        background.add_task(send_login_notification, user, request)
     return _issue_pair(db, user)
 
 
@@ -197,6 +207,8 @@ def mfa_setup(
 @router.post("/mfa/verify")
 def mfa_verify(
     body: s.MFAVerifyRequest,
+    request: Request,
+    background: BackgroundTasks,
     user: User = Depends(_bearer_user),
     db: Session = Depends(get_db),
 ) -> dict:
@@ -214,10 +226,14 @@ def mfa_verify(
     if not ok:
         raise HTTPException(status_code=401, detail="Invalid MFA code")
 
+    was_login_challenge = user.user_id in _pending_mfa
     user.mfa_enabled = True
     user.last_login = _now()
     _pending_mfa.discard(user.user_id)
     db.commit()
+    if was_login_challenge:
+        # This verify completed a sign-in (not an enrollment) — notify now.
+        background.add_task(send_login_notification, user, request)
     return {"verified": True}
 
 

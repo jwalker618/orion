@@ -38,7 +38,8 @@ service.
 |---|---|---|
 | `ORION_API_KEYS` | your secret key(s) | Replaces `demo-key` for **machine** callers (entity feeds, seed script, curl). |
 | `ORION_AUTH_SECRET` | `openssl rand -hex 32` | Signs user access tokens. Override for anything public; restarts with a changed secret sign everyone out (by design). |
-| `ORION_DEMO_PASSWORD` | your choice | Password for the seeded demo identities (see README §Logins). Default `orion-demo`. |
+| `ORION_DEMO_PASSWORD` | your choice | Initial password for the seeded accounts (see README §Logins). Default `orion-demo`. |
+| `ORION_LOGIN_NOTIFY_WEBHOOK_URL` | Slack incoming-webhook URL | Optional — posts "🔓 ORION login — …" on every fresh sign-in (same pattern as the DSI `LOGIN_NOTIFY_WEBHOOK_URL`, which is also accepted). Server-only, best-effort. |
 | `ORION_SEED_ON_START` | `true` | Loads the deterministic demo set (seed 42) at boot whenever the DB is empty — an ephemeral-filesystem deploy is demo-ready on every restart. Skip it if you attach a volume and want to manage data yourself. |
 | `ORION_DATABASE_URL` | `sqlite:////data/orion.db` | **Only with a volume** (step 3). Omit for ephemeral + seed-on-start. |
 | `ORION_CORS_ORIGINS` | `https://your-app.vercel.app` | **Only for topology B without the rewrite** (frontend calling Railway cross-origin). With the Vercel rewrite (recommended) or topology A, leave the default `*` or tighten it — same-origin requests don't need CORS. |

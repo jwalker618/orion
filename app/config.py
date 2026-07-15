@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from functools import lru_cache
 
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -31,6 +32,15 @@ class Settings(BaseSettings):
     # Password every seeded demo user starts with.
     demo_password: str = "orion-demo"
     access_token_ttl_seconds: int = 15 * 60
+    # Slack incoming-webhook for login notifications (generate-web DSI
+    # pattern; server-only, best-effort). Accepts either the ORION_-prefixed
+    # name or the bare LOGIN_NOTIFY_WEBHOOK_URL used by the DSI Vercel project.
+    login_notify_webhook_url: str = Field(
+        default="",
+        validation_alias=AliasChoices(
+            "ORION_LOGIN_NOTIFY_WEBHOOK_URL", "LOGIN_NOTIFY_WEBHOOK_URL"
+        ),
+    )
     # Sliding refresh window — mirrors the 45-minute idle limit the frontend
     # session guard enforces; each rotation extends it.
     refresh_token_ttl_seconds: int = 45 * 60
