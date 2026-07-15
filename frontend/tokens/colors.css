@@ -1,0 +1,66 @@
+/* ============================================================================
+ * Generate — COLOR TOKENS  (reference theme: Digital Signal Intelligence)
+ *
+ * The variable NAMES are the platform contract — every component references
+ * these, never raw hex. The VALUES here are the DSI reference palette. A new
+ * product overrides values (not names) in its own theme file; see
+ * tokens/theme-dark.css for the dark pattern.
+ *
+ * Mental model: a warm paper canvas, deep navy ink, with a small, disciplined
+ * accent set — teal "info" (facts the assessment produced) and coral "spot"
+ * (things awaiting you / urgent action) — plus the usual pos/neg/warn/aux.
+ * ========================================================================= */
+
+:root {
+  /* ─── Surface ─── warm paper, not white-on-white */
+  --color-canvas:         #f4efe5;  /* page background */
+  --color-surface:        #ffffff;  /* card / panel */
+  --color-surface-sunken: #efeae0;  /* wells, inputs, track */
+  --color-surface-elev:   #fbf8f2;  /* card header strip, tinted card */
+
+  /* ─── Ink ─── deep navy, never pure black */
+  --color-ink:      #0b2237;  /* primary text + structural accent */
+  --color-ink-soft: #586b7c;  /* secondary text */
+  --color-ink-mute: #9aa4ae;  /* tertiary / meta / eyebrows */
+
+  /* ─── Rules ─── hairlines tuned to the paper canvas */
+  --color-rule:        #e4dccc;
+  --color-rule-strong: #c9bfac;
+
+  /* ─── Accent / structural ─── (chrome, primary buttons) */
+  --color-accent: #0b2237;
+
+  /* ─── Info (teal) ─── informative hero facts: score, premium, "native" data */
+  --color-info:      #0e7c8c;
+  --color-info-soft: #dceff2;
+  --color-info-deep: #084853;
+
+  /* ─── Spot (coral) ─── awaiting-you / urgent action / CTAs */
+  --color-spot:      #d97757;
+  --color-spot-soft: #fae5da;
+  --color-spot-deep: #5c2e1a;
+
+  /* ─── Pos / Neg / Warn / Aux ─── status + a secondary "external" indigo */
+  --color-pos:       #1f8a5b;
+  --color-pos-soft:  #dceedf;
+  --color-neg:       #c24545;
+  --color-neg-soft:  #f5dcdc;
+  --color-warn:      #b47312;
+  --color-warn-soft: #f3e5c8;
+  --color-aux:       #4a60a8;
+  --color-aux-soft:  #dee3f2;
+
+  /* ─── Chrome ─── the sidebar / app shell stays navy in both themes */
+  --color-chrome:      #0b2237;
+  --color-chrome-deep: #051322;
+
+  /* ─── Semantic aliases ─── reach for these in product code */
+  --bg-page:        var(--color-canvas);
+  --bg-card:        var(--color-surface);
+  --bg-well:        var(--color-surface-sunken);
+  --text-strong:    var(--color-ink);
+  --text-body:      var(--color-ink-soft);
+  --text-meta:      var(--color-ink-mute);
+  --border-hair:    var(--color-rule);
+  --border-firm:    var(--color-rule-strong);
+}

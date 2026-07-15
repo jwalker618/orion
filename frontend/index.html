@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ORION · Broker Relations Dashboard</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230b2237'/%3E%3Crect x='9' y='16' width='3.5' height='8' rx='2' fill='%230e7c8c'/%3E%3Crect x='14' y='11' width='3.5' height='13' rx='2' fill='%230e7c8c'/%3E%3Crect x='19' y='6' width='3.5' height='18' rx='2' fill='%23d97757'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="tokens/fonts.css">
+<link rel="stylesheet" href="tokens/colors.css">
+<link rel="stylesheet" href="tokens/typography.css">
+<link rel="stylesheet" href="tokens/spacing.css">
+<link rel="stylesheet" href="tokens/theme-dark.css">
+<link rel="stylesheet" href="tokens/base.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div class="shell">
+
+  <!-- Masthead -->
+  <header class="masthead">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="brand-text">
+        <div class="brand-line"><span class="brand-name">ORION</span><span class="brand-sub">Broker Relations · Centre of Excellence</span></div>
+        <span class="brand-eyebrow">Distribution intelligence</span>
+      </div>
+    </div>
+    <div class="masthead-right">
+      <div class="context-pill"><span class="dot dot-pos"></span><strong>MS&amp;AD Group</strong><span class="sep">·</span><span>5 reporting entities</span></div>
+      <button class="icon-btn" id="btn-search" title="Search" aria-label="Search"></button>
+      <button class="icon-btn" id="btn-theme" title="Toggle theme" aria-label="Toggle theme"></button>
+      <div id="session-slot" style="position:relative"></div>
+    </div>
+  </header>
+
+  <!-- Tab bar -->
+  <nav class="tabbar" id="tabbar" role="tablist"></nav>
+
+  <!-- Filter bar -->
+  <div class="filterbar">
+    <div class="filterbar-left" id="filter-controls"></div>
+    <div class="filterbar-right">
+      <span id="filter-chips" class="chip-row"></span>
+      <span class="as-of tabular" id="as-of"></span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <main id="main"></main>
+</div>
+
+<div id="modal-root"></div>
+<div id="auth-root"></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

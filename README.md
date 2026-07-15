@@ -15,17 +15,41 @@ Apps) is a configuration change, not a rewrite (SPEC §10).
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 
-uvicorn app.main:app          # http://127.0.0.1:8000/docs for Swagger
+uvicorn app.main:app          # dashboard at http://127.0.0.1:8000, Swagger at /docs
 python scripts/seed.py        # loads 80 brokers × 12 months through the API
 pytest                        # 58 tests; KPI math is 100% covered
 ```
 
 Configuration via environment (or `.env`): `ORION_DATABASE_URL`
 (default `sqlite:///./demo.db`), `ORION_API_KEYS` (comma-separated,
-default `demo-key`), `ORION_CORS_ORIGINS` (default `*`).
+default `demo-key`), `ORION_CORS_ORIGINS` (default `*`),
+`ORION_AUTH_SECRET` / `ORION_DEMO_PASSWORD` (interactive auth, below).
 
-All routes are prefixed `/api/v1` and, except `GET /health`, require the
-`X-API-Key` header.
+All routes are prefixed `/api/v1`. Except `GET /health` and `/auth/*`,
+every call authenticates as either a **machine** (`X-API-Key` header — full
+access; used by reporting-entity feeds and the seed script) or a **person**
+(`Bearer` access token from `/auth/login` — permissions derive from role).
+
+## Logins (generate-web auth contract)
+
+The dashboard is login-gated, wire-compatible with the shared
+`@generate-web/auth` package: short-lived HMAC-signed access tokens (15 min,
+refreshed just-in-time), opaque **rotating refresh tokens** (reuse burns the
+token family), `/auth/me` profiles with role-derived permissions, **TOTP MFA**
+with single-use backup codes, password reset (token logged server-side — no
+mailer in the demo), SSO endpoint stubs (501 until an IdP is wired), and a
+45-minute idle session guard with a countdown pill, reset only by discrete
+interactions. Auth endpoints live under `/api/v1/auth/*` (see `/docs`).
+
+Demo identities (password: `ORION_DEMO_PASSWORD`, default `orion-demo`):
+
+| Email | Role | Behaviour |
+|---|---|---|
+| `kenji.ito@msad.example` | `group_admin` | everything incl. `admin:reset` |
+| `amara.osei@msad.example` | `broker_relations` | dashboards + ingestion |
+| `rin.nakamura@msad.example` | `entity_underwriter` | dashboards, **locked to MSRE** |
+| `keiko.tanaka@msad.example` | `entity_underwriter` | dashboards, **locked to AMLIN** |
+| `casey.reid@partner.example` | `reviewer` | dashboards only; illustrative tabs fenced |
 
 ## Ingestion (curl examples)
 
@@ -106,6 +130,16 @@ at higher hit ratios and guardrail breaches concentrate in Cyber/Energy
 every seed run re-proves the ingestion path. `POST /api/v1/admin/reset`
 truncates; `?reseed=true` reloads the same set through the same code path.
 
+## Dashboard frontend
+
+`frontend/` is the six-tab ORION dashboard, recreated from the Claude Design
+handoff (`docs/design-handoff/`) and wired to the live read model. It is a
+zero-build static app (ES modules + hand-built SVG charts on the Generate
+design-token contract) served by FastAPI at `/`. All charts, KPIs, filters,
+the broker profile modal, and the guardrails what-if slider run against
+`/api/v1/*`; Market Perception and Operational Workflow are labelled
+illustrative/demo-local per the honesty map. Light and dark themes.
+
 ## Layout
 
 ```
@@ -123,7 +157,18 @@ app/
     └── demo_data.py   # deterministic synthetic generator (SPEC §6)
 scripts/seed.py        # loads demo data via the API
 tests/                 # ingest, aggregation, dashboard suites
+frontend/              # six-tab dashboard (static, served at /)
+├── tokens/            # Generate design-system token CSS (from the handoff)
+├── css/app.css        # component layer transcribed from the design prototype
+└── js/                # app shell, API client, formatters, SVG chart builders
 ```
+
+## Deployment
+
+See [DEPLOY.md](DEPLOY.md) — Railway runs the container (Dockerfile +
+`railway.json`, healthchecked at `/api/v1/health`, optional `/data` volume or
+`ORION_SEED_ON_START=true` for ephemeral demo mode); Vercel optionally fronts
+`frontend/` with a same-origin `/api/*` rewrite (`frontend/vercel.json`).
 
 ## Integration notes
 

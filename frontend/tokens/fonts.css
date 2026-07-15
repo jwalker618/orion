@@ -1,0 +1,10 @@
+/* ============================================================================
+ * Generate — Webfonts
+ *
+ * The platform runs on IBM Plex Sans across every product (UI + display) and
+ * IBM Plex Mono for tabular / code contexts. Loaded from the Google Fonts CDN
+ * exactly as the production app does (apps/dsi/src/app/globals.css). The
+ * @font-face rules the CDN serves are what ship to consumers.
+ * ========================================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");

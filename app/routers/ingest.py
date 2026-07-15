@@ -15,14 +15,14 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.deps import AuthDep
+from app.deps import require_permission
 from app.models import Broker, BrokerSubmission, Entity, EntityPlan
 from app.schemas.common import BatchReport, RejectedRecord, StrictModel
 from app.schemas.plans import EntityPlanIn
 from app.schemas.submissions import BrokerIn, BrokerSubmissionIn
 from app.services import validation
 
-router = APIRouter(tags=["ingestion"], dependencies=[AuthDep])
+router = APIRouter(tags=["ingestion"])
 
 
 class RawPlanBatch(StrictModel):
@@ -48,7 +48,11 @@ def _guess_key(raw: dict[str, Any], fields: list[str]) -> str:
     return "/".join(str(raw.get(f, "?")) for f in fields)
 
 
-@router.post("/entity-plans", response_model=BatchReport)
+@router.post(
+    "/entity-plans",
+    response_model=BatchReport,
+    dependencies=[Depends(require_permission("ingest:write"))],
+)
 def post_entity_plans(batch: RawPlanBatch, db: Session = Depends(get_db)) -> BatchReport:
     known_entities = set(db.scalars(select(Entity.entity_code)))
     report = BatchReport(accepted=0, updated=0)
@@ -93,7 +97,11 @@ def post_entity_plans(batch: RawPlanBatch, db: Session = Depends(get_db)) -> Bat
     return report
 
 
-@router.post("/broker-submissions", response_model=BatchReport)
+@router.post(
+    "/broker-submissions",
+    response_model=BatchReport,
+    dependencies=[Depends(require_permission("ingest:write"))],
+)
 def post_broker_submissions(
     batch: RawSubmissionBatch, db: Session = Depends(get_db)
 ) -> BatchReport:
@@ -169,7 +177,11 @@ def post_broker_submissions(
     return report
 
 
-@router.post("/reference/brokers", response_model=BatchReport)
+@router.post(
+    "/reference/brokers",
+    response_model=BatchReport,
+    dependencies=[Depends(require_permission("reference:write"))],
+)
 def post_reference_brokers(batch: RawBrokerBatch, db: Session = Depends(get_db)) -> BatchReport:
     report = BatchReport(accepted=0, updated=0)
 

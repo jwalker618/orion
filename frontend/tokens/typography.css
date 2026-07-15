@@ -1,0 +1,43 @@
+/* ============================================================================
+ * Generate — TYPOGRAPHY TOKENS
+ *
+ * One family does all the work: IBM Plex Sans for UI + display, IBM Plex Mono
+ * for tabular figures. The system leans on weight (500/600/700) and tight
+ * tracking on big numbers rather than multiple typefaces. Numbers are always
+ * tabular (`font-variant-numeric: tabular-nums`) so columns of figures align —
+ * this is a numbers-heavy, analyst-facing product.
+ * ========================================================================= */
+
+:root {
+  /* ─── Families ─── */
+  --font-sans:    "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-display: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ─── Weights ─── */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* ─── Type scale (px) ─── matches the ui typography primitives ─── */
+  --text-eyebrow: 10.5px;  /* uppercase, tracked, ink-mute */
+  --text-micro:   11px;    /* smallest meta */
+  --text-caption: 12px;    /* captions, field labels */
+  --text-body:    13.5px;  /* default body */
+  --text-ui:      14px;    /* controls, nav, card titles */
+  --text-num-sm:  18px;    /* small stat */
+  --text-num-md:  28px;    /* default hero number */
+  --text-num-lg:  36px;    /* large hero number */
+  --text-num-xl:  56px;    /* masthead figure */
+
+  /* ─── Tracking ─── */
+  --track-eyebrow:  0.12em;   /* uppercase labels */
+  --track-num:     -0.01em;   /* tighten medium hero numbers */
+  --track-num-xl:  -0.02em;   /* tighten the biggest numbers */
+
+  /* ─── Line height ─── */
+  --leading-none: 1;
+  --leading-tight: 1.2;
+  --leading-body: 1.55;
+}
