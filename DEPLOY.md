@@ -129,6 +129,17 @@ For a fresh one (or a separate `#orion-logins` channel):
 Treat the URL as a secret (anyone holding it can post to the channel). It
 stays server-side on Railway and never reaches the browser.
 
+**Recovering an existing webhook URL** (e.g. the DSI one, when Vercel has it
+stored as a *Sensitive* variable and won't reveal it): Slack always shows it —
+open <https://api.slack.com/apps> → **Your Apps** → the app that owns the
+webhook (its name appears next to the login messages in the channel) →
+**Incoming Webhooks** → copy from *Webhook URLs for Your Workspace*. Legacy
+integrations instead live at
+`<workspace>.slack.com/apps/manage/custom-integrations` → Incoming WebHooks →
+configuration. If you can't access the owning app at all, just add a **new**
+webhook to the same channel — multiple webhooks per channel is fine, and a
+separate revocable credential per product is cleaner anyway.
+
 ### Step 2 — set the variable on Railway
 
 Railway → your ORION service → **Variables** → add:
