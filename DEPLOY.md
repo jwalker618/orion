@@ -97,7 +97,79 @@ If you'd rather point the frontend straight at Railway (no proxy), skip the
 the dashboard stores the API base too. Then you **must** set
 `ORION_CORS_ORIGINS=https://<vercel-domain>` on Railway.
 
-## 6 · Verify
+## 6 · Slack login notifications
+
+**Where this lives, and why it differs from DSI.** In generate-web/DSI the
+frontend is a Next.js app, so its server code (the `/api/login-notify` route)
+runs *on Vercel* — that's why `LOGIN_NOTIFY_WEBHOOK_URL` sat in the Vercel
+project's environment variables. ORION's Vercel project is **static files
+only** — there is no server code on Vercel to call Slack. The server here is
+the FastAPI container on **Railway**, and the login endpoint itself sends the
+notification. So:
+
+> **The webhook variable goes on Railway. Vercel needs no configuration for
+> this feature — in either topology.**
+
+### Step 1 — get a Slack incoming-webhook URL
+
+If you already have the DSI webhook and want ORION logins in the **same
+channel**, skip to step 2 and paste that same URL — it works as-is.
+
+For a fresh one (or a separate `#orion-logins` channel):
+
+1. Go to <https://api.slack.com/apps> → **Create New App → From scratch** —
+   name it e.g. `ORION login notify`, pick your workspace.
+2. In the app's sidebar: **Incoming Webhooks** → toggle **Activate Incoming
+   Webhooks** on.
+3. **Add New Webhook to Workspace** → choose the channel to post into →
+   **Allow**.
+4. Copy the generated URL — it looks like
+   `https://hooks.slack.com/services/<team-id>/<webhook-id>/<token>`.
+
+Treat the URL as a secret (anyone holding it can post to the channel). It
+stays server-side on Railway and never reaches the browser.
+
+### Step 2 — set the variable on Railway
+
+Railway → your ORION service → **Variables** → add:
+
+```
+ORION_LOGIN_NOTIFY_WEBHOOK_URL = <the URL you copied in step 1>
+```
+
+(The bare `LOGIN_NOTIFY_WEBHOOK_URL` name is also accepted, so a copy-pasted
+variable from the DSI Vercel project works unchanged.) Save — Railway
+redeploys automatically.
+
+### Step 3 — test it
+
+Sign in on the dashboard, or from a terminal:
+
+```bash
+curl -s -X POST https://<railway-domain>/api/v1/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"demo.user@msinternational.com","password":"<ORION_DEMO_PASSWORD>"}' > /dev/null
+```
+
+Within a second or two the channel receives:
+
+> 🔓 **ORION login** — Demo User (demo.user@msinternational.com) · broker_relations · MS International
+> 203.0.113.7 · Mozilla/5.0 (…) · 2026-07-15T09:10:51Z
+
+Notes on behaviour (same contract as DSI): unset variable = feature off; a
+down or rotated webhook is swallowed and never fails a login; for MFA users
+the message fires when the challenge passes, not at password entry; the
+notification runs as a background task after the login response, so it adds
+no login latency.
+
+| Not seeing messages? | Check |
+|---|---|
+| Nothing posts at all | Variable set on **Railway** (not Vercel)? Redeployed since setting it? Correct service? |
+| Posted to the wrong channel | The channel is baked into the webhook URL at creation — make a new webhook for a different channel. |
+| Works locally, not deployed | Local `.env` vs Railway Variables are separate — set it in both places you run the API. |
+| `invalid_token` in Railway logs | Webhook was revoked/rotated in Slack — mint a new one and update the variable. |
+
+## 7 · Verify
 
 ```bash
 # API up and seeded
